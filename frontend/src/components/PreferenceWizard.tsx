@@ -1,0 +1,163 @@
+"use client";
+
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Preferences } from "@/lib/types";
+import { GENRES, LANGUAGES, MOODS } from "@/lib/constants";
+import { Pill } from "./Pill";
+
+type StepKey = "language" | "genre" | "mood";
+
+interface Step {
+  key: StepKey;
+  question: string;
+  subtitle?: string;
+  multi?: boolean;
+  optional?: boolean;
+}
+
+const STEPS: Step[] = [
+  { key: "language", question: "What language?" },
+  { key: "genre", question: "What genre?", subtitle: "Pick as many as you like", multi: true },
+  { key: "mood", question: "What's the mood tonight?", optional: true },
+];
+
+const AUTO_ADVANCE_DELAY = 260;
+
+export function PreferenceWizard({
+  prefs,
+  onChange,
+  onComplete,
+}: {
+  prefs: Preferences;
+  onChange: (next: Preferences) => void;
+  onComplete: () => void;
+}) {
+  const [stepIndex, setStepIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  // Tracks which steps the user has actually interacted with, so an option
+  // that merely matches the default value doesn't render as "pre-selected."
+  const [touched, setTouched] = useState<Partial<Record<StepKey, boolean>>>({});
+  const step = STEPS[stepIndex];
+
+  const goTo = (nextIndex: number, dir: number) => {
+    setDirection(dir);
+    if (nextIndex >= STEPS.length) {
+      onComplete();
+    } else {
+      setStepIndex(nextIndex);
+    }
+  };
+
+  const advance = () => {
+    setTimeout(() => goTo(stepIndex + 1, 1), AUTO_ADVANCE_DELAY);
+  };
+
+  const back = () => {
+    if (stepIndex === 0) return;
+    goTo(stepIndex - 1, -1);
+  };
+
+  const toggleGenre = (g: string) => {
+    setTouched((t) => ({ ...t, genre: true }));
+    const has = prefs.genres.includes(g);
+    onChange({ ...prefs, genres: has ? prefs.genres.filter((x) => x !== g) : [...prefs.genres, g] });
+  };
+
+  const selectSingle = <K extends keyof Preferences>(key: K, value: Preferences[K]) => {
+    setTouched((t) => ({ ...t, [step.key]: true }));
+    onChange({ ...prefs, [key]: value });
+    advance();
+  };
+
+  return (
+    <div className="w-full max-w-2xl flex flex-col items-center gap-10">
+      {/* progress */}
+      <div className="flex items-center gap-2">
+        {STEPS.map((s, i) => (
+          <div
+            key={s.key}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === stepIndex ? "w-8 bg-gradient-to-r from-accent to-accent-2" : i < stepIndex ? "w-4 bg-white/40" : "w-4 bg-white/10"
+            }`}
+          />
+        ))}
+      </div>
+
+      <div className="w-full min-h-[220px] flex flex-col items-center">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={step.key}
+            custom={direction}
+            initial={{ opacity: 0, x: direction * 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction * -40 }}
+            transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
+            className="w-full flex flex-col items-center gap-8"
+          >
+            <div className="text-center space-y-2">
+              <h2 className="font-display text-4xl sm:text-5xl">{step.question}</h2>
+              {step.subtitle && <p className="text-muted text-sm">{step.subtitle}</p>}
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-3 max-w-xl">
+              {step.key === "language" &&
+                LANGUAGES.map((l) => (
+                  <Pill
+                    key={l}
+                    label={l}
+                    selected={!!touched.language && prefs.language === l}
+                    onClick={() => selectSingle("language", l)}
+                  />
+                ))}
+
+              {step.key === "genre" &&
+                GENRES.map((g) => (
+                  <Pill key={g} label={g} selected={prefs.genres.includes(g)} onClick={() => toggleGenre(g)} />
+                ))}
+
+              {step.key === "mood" &&
+                MOODS.map((m) => (
+                  <Pill
+                    key={m.label}
+                    label={m.label}
+                    emoji={m.emoji}
+                    selected={!!touched.mood && prefs.mood === (m.value || null)}
+                    onClick={() => selectSingle("mood", m.value || null)}
+                  />
+                ))}
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                onClick={back}
+                disabled={stepIndex === 0}
+                className="text-sm text-muted hover:text-foreground transition-colors disabled:opacity-0 disabled:pointer-events-none"
+              >
+                ← Back
+              </button>
+
+              {step.multi && (
+                <button
+                  onClick={() => goTo(stepIndex + 1, 1)}
+                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-accent to-accent-2 text-black text-sm font-semibold hover:scale-105 transition-transform"
+                >
+                  Continue
+                </button>
+              )}
+
+              {step.optional && (
+                <button
+                  onClick={() => goTo(stepIndex + 1, 1)}
+                  className="text-sm text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
+                >
+                  Skip
+                </button>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
