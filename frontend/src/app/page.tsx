@@ -8,8 +8,8 @@ import { FlipButton } from "@/components/FlipButton";
 import { ReelDisplay } from "@/components/ReelDisplay";
 import { MovieResultCard } from "@/components/MovieResultCard";
 import { FlipHistory } from "@/components/FlipHistory";
-import { MLInsightsPanel } from "@/components/MLInsightsPanel";
 import { SoundToggle } from "@/components/SoundToggle";
+import { HomeLogoButton } from "@/components/HomeLogoButton";
 import { useSound } from "@/hooks/useSound";
 import { useFlipSequence } from "@/hooks/useFlipSequence";
 import { startSession, flipAgain, surpriseMe as surpriseMeApi } from "@/lib/api";
@@ -59,10 +59,19 @@ export default function Home() {
     flip.run(() => surpriseMeApi());
   };
 
+  const handleGoHome = () => {
+    sound.playClick();
+    setActiveRec(null);
+    setWizardDone(false);
+    setPrefs(DEFAULT_PREFS);
+    flip.reset();
+  };
+
   const displayed = activeRec ?? flip.result;
 
   return (
     <main className="min-h-screen flex flex-col items-center px-5 sm:px-8 py-14 sm:py-20 gap-12">
+      <HomeLogoButton onClick={handleGoHome} />
       <SoundToggle enabled={sound.enabled} onToggle={sound.toggle} />
 
       <AnimatePresence mode="wait">
@@ -162,7 +171,6 @@ export default function Home() {
             <p className="font-display text-sm tracking-[0.3em] text-muted">NOT RANDOM. JUST UNPREDICTABLE.</p>
             <MovieResultCard rec={displayed} onFlipAgain={handleFlipAgain} onSurpriseMe={handleSurpriseMe} />
             <FlipHistory history={flip.history} activeId={displayed.movie.id} onSelect={setActiveRec} />
-            <MLInsightsPanel insights={displayed.insights} />
           </motion.div>
         )}
 
