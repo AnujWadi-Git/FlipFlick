@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
+/* Ferrari DESIGN.md tokens, adapted 1:1 where the product allows */
 :root {
-  --background: #0a0a0a;
-  --surface: #151515;
-  --foreground: #f5f5f5;
-  --muted: #8f8f8f;
-  --hairline: rgba(245, 245, 245, 0.14);
-  --accent: #d81e2c;
-  --accent-dim: #7a1219;
-  --cue: #ff2d3a;
+  --background: #181818; /* colors.canvas — near-black, never pure black */
+  --surface: #303030; /* colors.canvas-elevated / surface-card */
+  --foreground: #ffffff; /* colors.ink */
+  --muted: #969696; /* colors.body */
+  --muted-soft: #8f8f8f; /* colors.muted-soft */
+  --hairline: #303030; /* colors.hairline */
+  --accent: #da291c; /* colors.primary — Rosso Corsa */
+  --accent-active: #b01e0a; /* colors.primary-active */
+  --accent-hover: #9d2211; /* colors.primary-hover */
+  --cue: #f13a2c; /* colors.semantic-warning */
 }
 
 @theme inline {
@@ -16,59 +19,63 @@
   --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-muted-soft: var(--muted-soft);
   --color-hairline: var(--hairline);
   --color-accent: var(--accent);
-  --color-accent-dim: var(--accent-dim);
+  --color-accent-active: var(--accent-active);
+  --color-accent-hover: var(--accent-hover);
   --color-cue: var(--cue);
-  --font-display: var(--font-display);
-  --font-mono: var(--font-mono);
-  --font-body: var(--font-body);
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-sans);
+  --font-body: var(--font-sans);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), -apple-system, system-ui, sans-serif;
   position: relative;
 }
 
-/* letterboxed framing, like a projected film */
+/* letterboxed framing, like a projected film — layered on top of the
+   Ferrari token system as FlipFlick's own signature, not part of DESIGN.md */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 40;
   pointer-events: none;
-  background:
-    linear-gradient(to bottom, var(--background) 0 10px, transparent 10px),
-    linear-gradient(to top, var(--background) 0 10px, transparent 10px);
-  background-repeat: no-repeat;
-  background-position: top, bottom;
   box-shadow:
-    inset 0 12px 0 0 var(--background),
-    inset 0 -12px 0 0 var(--background);
+    inset 0 10px 0 0 var(--background),
+    inset 0 -10px 0 0 var(--background);
   border-top: 1px solid var(--hairline);
   border-bottom: 1px solid var(--hairline);
 }
 
-/* visible film grain, heavier than a typical subtle-noise overlay */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.09;
+  opacity: 0.05;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
+/* typography.display-* — FerrariSans 500, negative tracking. Inter substitute per DESIGN.md. */
 .font-display {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
+/* typography.caption-uppercase / button / nav-link — uppercase, tracked, 600 */
 .font-mono {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .text-accent-solid {
@@ -77,7 +84,7 @@ body::before {
 
 ::selection {
   background: var(--accent);
-  color: #1a1408;
+  color: #ffffff;
 }
 
 @keyframes flicker {
@@ -91,12 +98,12 @@ body::before {
 }
 
 @keyframes land-pulse {
-  0% { transform: scale(0.96); }
-  55% { transform: scale(1.02); }
+  0% { transform: scale(0.97); }
+  55% { transform: scale(1.015); }
   100% { transform: scale(1); }
 }
 .animate-land {
-  animation: land-pulse 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: land-pulse 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @keyframes count-up {

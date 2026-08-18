@@ -25,7 +25,7 @@ export function Pill({
         "focus-visible:ring-1 focus-visible:ring-accent",
         selected
           ? "bg-accent border-accent text-white"
-          : "bg-transparent border-hairline text-foreground/75 hover:border-accent-dim hover:text-foreground"
+          : "bg-transparent border-hairline text-foreground/75 hover:border-accent hover:text-foreground"
       )}
       aria-pressed={selected}
     >

@@ -9,12 +9,12 @@ export function HomeLogoButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       whileHover={{ y: -1 }}
       whileTap={{ scale: 0.94 }}
-      className="fixed top-5 left-5 z-50 flex items-center justify-center w-11 h-11 rounded-full border border-hairline bg-background/90 backdrop-blur-sm hover:border-accent-dim transition-colors"
+      className="fixed top-5 left-5 z-50 flex items-center justify-center w-11 h-11 rounded-full border border-hairline bg-background/90 backdrop-blur-sm hover:border-accent transition-colors"
       aria-label="Back to home"
     >
-      <span className="font-display italic text-lg leading-none">
+      <span className="font-display text-lg leading-none">
         <span className="text-foreground">F</span>
-        <span className="text-accent-solid not-italic">F</span>
+        <span className="text-accent-solid">F</span>
       </span>
     </motion.button>
   );

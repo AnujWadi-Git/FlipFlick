@@ -40,7 +40,7 @@ export function MovieResultCard({
         <p className="text-center font-mono text-xs tracking-wide text-accent/80 mb-4">{rec.widened_notice}</p>
       )}
 
-      <div className="rounded-[28px] overflow-hidden border border-hairline bg-surface/60 shadow-[0_30px_120px_rgba(0,0,0,0.6)]">
+      <div className="overflow-hidden border border-hairline bg-surface/60">
         <div className="grid sm:grid-cols-[minmax(0,240px)_1fr]">
           {/* poster */}
           <div
@@ -52,7 +52,7 @@ export function MovieResultCard({
               <img src={movie.poster_url} alt={movie.title} className="absolute inset-0 w-full h-full object-cover" />
             ) : (
               <>
-                <span className="font-display italic text-3xl text-white/40 select-none text-center px-4">
+                <span className="font-display text-3xl text-white/40 select-none text-center px-4">
                   {movie.title}
                 </span>
                 <span className="absolute bottom-3 left-3 right-3 font-mono text-[10px] uppercase tracking-widest text-white/60">
@@ -66,7 +66,7 @@ export function MovieResultCard({
           <div className="p-6 sm:p-8 space-y-5">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-accent mb-1.5">The movie tonight</p>
-              <h2 className="font-display italic font-medium text-4xl sm:text-5xl leading-none">{movie.title}</h2>
+              <h2 className="font-display font-medium text-4xl sm:text-5xl leading-none">{movie.title}</h2>
             </div>
 
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted">
@@ -79,15 +79,15 @@ export function MovieResultCard({
               <span>{formatRuntime(movie.runtime)}</span>
             </div>
 
-            <div className="flex items-center gap-2 rounded-full border border-hairline px-4 py-2.5 w-fit">
+            <div className="flex items-center gap-2 border-y border-hairline py-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Rating</span>
-              <span className="font-display text-2xl text-accent-solid">
+              <span className="font-display font-bold text-2xl text-accent-solid">
                 <AnimatedNumber value={movie.rating} />/10
               </span>
               <span className="font-mono text-[10px] text-muted">({movie.vote_count.toLocaleString()} votes)</span>
             </div>
 
-            {movie.tagline && <p className="font-display italic text-foreground/70 text-base">&ldquo;{movie.tagline}&rdquo;</p>}
+            {movie.tagline && <p className="font-display text-foreground/70 text-base">&ldquo;{movie.tagline}&rdquo;</p>}
             <p className="text-sm leading-relaxed text-foreground/80 line-clamp-4">{movie.overview}</p>
 
             <div className="font-mono text-xs text-muted space-y-1">
@@ -97,31 +97,31 @@ export function MovieResultCard({
               )}
             </div>
 
-            <div className="rounded-2xl border border-hairline p-4">
+            <div className="border border-hairline p-4">
               <p className="font-mono text-[11px] uppercase tracking-widest text-accent mb-1.5">Why this movie?</p>
               <p className="text-sm text-foreground/80 leading-relaxed">{rec.explanation}</p>
             </div>
 
-            <div className="flex flex-wrap gap-3 pt-1 font-mono text-xs uppercase tracking-wide">
+            <div className="flex flex-wrap gap-3 pt-1 font-mono text-xs uppercase tracking-wide font-semibold">
               <a
                 href={movie.trailer_search_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-full border border-hairline text-foreground/85 hover:border-accent-dim hover:text-foreground transition-colors"
+                className="px-5 py-3 border border-hairline text-foreground/85 hover:border-accent hover:text-foreground transition-colors"
               >
                 ▶ Watch Trailer
               </a>
               <button
                 onClick={onFlipAgain}
                 disabled={flipDisabled}
-                className="px-5 py-2.5 rounded-full border border-accent bg-accent text-white hover:bg-transparent hover:text-accent transition-colors disabled:opacity-40"
+                className="px-5 py-3 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors disabled:opacity-40"
               >
                 ↻ Flip Again
               </button>
               <button
                 onClick={onSurpriseMe}
                 disabled={flipDisabled}
-                className="px-5 py-2.5 rounded-full border border-hairline text-foreground/85 hover:border-accent-dim hover:text-foreground transition-colors disabled:opacity-40"
+                className="px-5 py-3 border border-hairline text-foreground/85 hover:border-accent hover:text-foreground transition-colors disabled:opacity-40"
               >
                 ⚄ Surprise Me
               </button>

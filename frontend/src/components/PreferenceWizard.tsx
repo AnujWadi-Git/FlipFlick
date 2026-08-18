@@ -80,7 +80,7 @@ export function PreferenceWizard({
             <div
               key={s.key}
               className={`h-[3px] rounded-full transition-all duration-300 ${
-                i === stepIndex ? "w-8 bg-accent" : i < stepIndex ? "w-4 bg-accent-dim" : "w-4 bg-hairline"
+                i === stepIndex ? "w-8 bg-accent" : i < stepIndex ? "w-4 bg-accent" : "w-4 bg-hairline"
               }`}
             />
           ))}
@@ -100,7 +100,7 @@ export function PreferenceWizard({
             className="w-full flex flex-col items-center gap-8"
           >
             <div className="text-center space-y-2">
-              <h2 className="font-display italic font-medium text-4xl sm:text-5xl">{step.question}</h2>
+              <h2 className="font-display text-4xl sm:text-5xl">{step.question}</h2>
               {step.subtitle && <p className="font-mono text-xs uppercase tracking-widest text-muted">{step.subtitle}</p>}
             </div>
 
@@ -144,7 +144,7 @@ export function PreferenceWizard({
               {step.multi && (
                 <button
                   onClick={() => goTo(stepIndex + 1, 1)}
-                  className="px-6 py-2.5 rounded-full border border-accent bg-accent text-white hover:bg-transparent hover:text-accent transition-colors"
+                  className="px-8 py-3.5 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors"
                 >
                   Continue
                 </button>

@@ -137,7 +137,7 @@ export default function Home() {
                   Surprise Me
                 </button>
               </div>
-              <p className="font-mono text-[11px] text-muted/70 max-w-xs text-center pt-2 italic">
+              <p className="font-mono text-[11px] text-muted/70 max-w-xs text-center pt-2">
                 The flip is random. The choices aren&apos;t.
               </p>
             </div>
@@ -182,7 +182,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center gap-6 mt-24 text-center max-w-md"
           >
-            <p className="font-display italic text-3xl text-cue">Reel jammed.</p>
+            <p className="font-display text-3xl text-cue">Reel jammed.</p>
             <p className="font-mono text-xs text-muted">{flip.error || "Something went wrong talking to the recommender."}</p>
             <FlipButton onClick={handleFlip} label="Try Again" />
           </motion.div>

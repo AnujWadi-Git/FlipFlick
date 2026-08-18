@@ -44,12 +44,12 @@ app.add_middleware(
 _state: dict = {}
 _sessions: dict[str, dict] = {}
 
-# duotones consistent with the app's black/red/white cinema palette
+# duotones consistent with the Ferrari-derived palette: near-black canvas + Rosso Corsa red
 POSTER_PALETTES = [
-    ["#4a1216", "#0a0a0a"], ["#5c161c", "#0a0a0a"], ["#3a3a3a", "#0a0a0a"],
-    ["#601a20", "#0a0a0a"], ["#2b2b2b", "#0a0a0a"], ["#451015", "#0a0a0a"],
-    ["#4d4d4d", "#0a0a0a"], ["#551419", "#0a0a0a"], ["#333333", "#0a0a0a"],
-    ["#3f1013", "#0a0a0a"],
+    ["#4a1216", "#181818"], ["#5c161c", "#181818"], ["#3a3a3a", "#181818"],
+    ["#601a20", "#181818"], ["#2b2b2b", "#181818"], ["#451015", "#181818"],
+    ["#4d4d4d", "#181818"], ["#551419", "#181818"], ["#333333", "#181818"],
+    ["#3f1013", "#181818"],
 ]
 
 

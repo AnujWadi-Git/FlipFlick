@@ -20,12 +20,11 @@ export function FlipButton({
       disabled={disabled}
       whileHover={!disabled ? { y: -2 } : undefined}
       whileTap={!disabled ? { scale: 0.97 } : undefined}
-      className={`relative w-full sm:w-auto px-14 py-5 rounded-full font-mono text-lg sm:text-xl tracking-[0.15em] uppercase
-        border border-accent bg-transparent text-accent
-        shadow-[0_8px_30px_rgba(216,30,44,0.15)]
+      className={`relative w-full sm:w-auto px-14 py-5 font-mono text-lg sm:text-xl tracking-[0.15em] uppercase font-bold
+        border border-accent bg-accent text-white
         transition-colors duration-200
-        hover:bg-accent hover:text-white
-        disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-accent`}
+        hover:bg-accent-hover hover:border-accent-hover
+        disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-accent`}
     >
       {spinning ? "Flipping…" : label}
     </motion.button>

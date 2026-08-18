@@ -20,7 +20,7 @@ export function IntroTitle() {
         REEL 01 — TONIGHT&apos;S SCREENING
       </p>
       <h1
-        className="font-display italic font-medium text-[13vw] sm:text-[5.5rem] leading-[0.9] flex justify-center flex-wrap"
+        className="font-display text-[13vw] sm:text-[5.5rem] leading-[0.9] flex justify-center flex-wrap"
         style={{ perspective: 600 }}
       >
         {TITLE.split("").map((ch, i) => (
@@ -30,7 +30,7 @@ export function IntroTitle() {
             initial="hidden"
             animate="show"
             variants={letterVariants}
-            className={i >= 4 ? "text-accent-solid not-italic" : "text-foreground"}
+            className={i >= 4 ? "text-accent-solid" : "text-foreground"}
           >
             {ch}
           </motion.span>
