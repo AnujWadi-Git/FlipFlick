@@ -198,32 +198,34 @@ class Recommender:
 
     # --------------------------------------------------------- explaining
     def explain(self, movie: pd.Series, prefs: Preferences) -> str:
-        reasons = []
+        # Each clause reads standalone as "<title> <clause>" — no shared
+        # prefix, so it stays grammatical whether one reason fires or five.
+        clauses = []
         matched_genres = [g for g in prefs.genres if g in movie["genres_list"]]
         if matched_genres:
-            reasons.append(f"you asked for {', '.join(matched_genres).lower()}")
+            label = " and ".join(g.lower() for g in matched_genres)
+            clauses.append(f"matches your pick for {label}")
         if prefs.mood and prefs.mood in MOOD_LEXICON:
             lex = MOOD_LEXICON[prefs.mood]
             if any(g in movie["genres_list"] for g in lex["genres"]) or any(
                 kw in " ".join(movie["keywords_list"]).lower() for kw in lex["keywords"]
             ):
-                reasons.append(f"it matches that '{prefs.mood}' feeling")
+                clauses.append(f"fits that '{prefs.mood}' feeling")
         if prefs.min_rating and movie["vote_average"] >= prefs.min_rating:
-            reasons.append(f"it's rated {movie['vote_average']:.1f}/10, clearing your {prefs.min_rating:.0f}+ bar")
+            clauses.append(f"is rated {movie['vote_average']:.1f}/10, clearing your {prefs.min_rating:.0f}+ bar")
         era_range = ERA_RANGES.get(prefs.era)
         if era_range and era_range[0] <= movie["year"] <= era_range[1]:
-            reasons.append(f"it's from {movie['year']}, right in your {prefs.era} window")
+            clauses.append(f"is from {movie['year']}, right in your {prefs.era} window")
         rt_range = RUNTIME_RANGES.get(prefs.runtime)
         if rt_range and rt_range[0] <= movie["runtime"] <= rt_range[1]:
             if movie["runtime"] >= 121:
-                reasons.append("its runtime matches your ‘I have time tonight’ vibe")
+                clauses.append("runs long enough for an 'I have time tonight' watch")
             elif movie["runtime"] <= 89:
-                reasons.append("it's short and tight, matching your quick-watch pick")
+                clauses.append("is short and tight, matching your quick-watch pick")
             else:
-                reasons.append("its runtime lands right in your sweet spot")
+                clauses.append("lands right in your runtime sweet spot")
 
-        if not reasons:
-            return f"{movie['title']} scored highest across your picks once we weighed genre, rating, and vibe together."
+        if not clauses:
+            return f"{movie['title']} scored highest across your picks once we weighed genre and rating together."
 
-        prefix = "You asked for something " if len(reasons) > 1 else "You wanted "
-        return prefix + "; ".join(reasons) + f" — {movie['title']} came out on top."
+        return f"{movie['title']} " + "; and it ".join(clauses) + "."
