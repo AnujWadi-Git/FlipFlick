@@ -14,7 +14,6 @@ import { useSound } from "@/hooks/useSound";
 import { useFlipSequence } from "@/hooks/useFlipSequence";
 import { startSession, flipAgain, surpriseMe as surpriseMeApi } from "@/lib/api";
 import { Preferences, Recommendation } from "@/lib/types";
-import { MOODS } from "@/lib/constants";
 
 const DEFAULT_PREFS: Preferences = {
   language: "Any language",
@@ -28,7 +27,6 @@ const DEFAULT_PREFS: Preferences = {
 function summaryChips(prefs: Preferences): string[] {
   const chips: string[] = [prefs.language];
   if (prefs.genres.length) chips.push(prefs.genres.join(", "));
-  if (prefs.mood) chips.push(MOODS.find((m) => m.value === prefs.mood)?.label ?? prefs.mood);
   return chips;
 }
 

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Preferences } from "@/lib/types";
-import { GENRES, LANGUAGES, MOODS } from "@/lib/constants";
+import { GENRES, LANGUAGES } from "@/lib/constants";
 import { Pill } from "./Pill";
 
-type StepKey = "language" | "genre" | "mood";
+type StepKey = "language" | "genre";
 
 interface Step {
   key: StepKey;
@@ -19,7 +19,6 @@ interface Step {
 const STEPS: Step[] = [
   { key: "language", question: "What language?" },
   { key: "genre", question: "What genre?", subtitle: "Pick as many as you like", multi: true },
-  { key: "mood", question: "What's the mood tonight?", optional: true },
 ];
 
 const AUTO_ADVANCE_DELAY = 260;
@@ -118,17 +117,6 @@ export function PreferenceWizard({
               {step.key === "genre" &&
                 GENRES.map((g) => (
                   <Pill key={g} label={g} selected={prefs.genres.includes(g)} onClick={() => toggleGenre(g)} />
-                ))}
-
-              {step.key === "mood" &&
-                MOODS.map((m) => (
-                  <Pill
-                    key={m.label}
-                    label={m.label}
-                    emoji={m.emoji}
-                    selected={!!touched.mood && prefs.mood === (m.value || null)}
-                    onClick={() => selectSingle("mood", m.value || null)}
-                  />
                 ))}
             </div>
 
