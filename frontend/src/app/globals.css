@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #07060a;
-  --surface: #0f0d15;
-  --foreground: #f5f3ef;
-  --muted: #9a94a8;
-  --accent: #ff3d5a;
-  --accent-2: #ffb020;
+  --background: #0b0a08;
+  --surface: #151210;
+  --foreground: #f1ece0;
+  --muted: #8c8479;
+  --hairline: rgba(241, 236, 224, 0.14);
+  --accent: #c9a24b;
+  --accent-dim: #8a6f34;
+  --cue: #7a2727;
 }
 
 @theme inline {
@@ -14,9 +16,12 @@
   --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
   --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
+  --color-accent-dim: var(--accent-dim);
+  --color-cue: var(--cue);
   --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
   --font-body: var(--font-body);
 }
 
@@ -27,46 +32,67 @@ body {
   position: relative;
 }
 
-/* subtle film-grain overlay, generated at build time — no image asset needed */
+/* letterboxed framing, like a projected film */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, var(--background) 0 10px, transparent 10px),
+    linear-gradient(to top, var(--background) 0 10px, transparent 10px);
+  background-repeat: no-repeat;
+  background-position: top, bottom;
+  box-shadow:
+    inset 0 12px 0 0 var(--background),
+    inset 0 -12px 0 0 var(--background);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* visible film grain, heavier than a typical subtle-noise overlay */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: 0.09;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
 .font-display {
-  font-family: var(--font-display), sans-serif;
-  letter-spacing: 0.02em;
+  font-family: var(--font-display), serif;
 }
 
-.text-gradient {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.font-mono {
+  font-family: var(--font-mono), monospace;
+}
+
+.text-accent-solid {
+  color: var(--accent);
 }
 
 ::selection {
   background: var(--accent);
-  color: white;
+  color: #1a1408;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 40px 0 rgba(255, 61, 90, 0.35); }
-  50% { box-shadow: 0 0 70px 10px rgba(255, 61, 90, 0.55); }
+@keyframes flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.85; }
+  98% { opacity: 1; }
+  99% { opacity: 0.9; }
 }
-.animate-pulse-glow {
-  animation: pulse-glow 2.2s ease-in-out infinite;
+.animate-flicker {
+  animation: flicker 4s infinite;
 }
 
 @keyframes land-pulse {
-  0% { transform: scale(0.94); }
-  55% { transform: scale(1.04); }
+  0% { transform: scale(0.96); }
+  55% { transform: scale(1.02); }
   100% { transform: scale(1); }
 }
 .animate-land {
@@ -81,7 +107,6 @@ body::before {
   animation: count-up 0.5s ease-out both;
 }
 
-/* thin, unobtrusive scrollbar for horizontal history rail */
 .scroll-thin::-webkit-scrollbar { height: 6px; }
-.scroll-thin::-webkit-scrollbar-thumb { background: #2a2632; border-radius: 999px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 0; }
 .scroll-thin::-webkit-scrollbar-track { background: transparent; }

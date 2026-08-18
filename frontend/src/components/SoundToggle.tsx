@@ -5,11 +5,11 @@ export function SoundToggle({ enabled, onToggle }: { enabled: boolean; onToggle:
     <button
       type="button"
       onClick={onToggle}
-      className="fixed top-5 right-5 z-50 flex items-center gap-2 px-3 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.1] backdrop-blur-md text-xs font-medium transition-colors"
+      className="fixed top-5 right-5 z-50 flex items-center gap-2 px-3 py-2 border border-hairline hover:border-accent-dim font-mono text-[11px] uppercase tracking-wide transition-colors"
       aria-label={enabled ? "Mute sound" : "Unmute sound"}
     >
-      <span>{enabled ? "🔊" : "🔇"}</span>
-      <span className="hidden sm:inline text-muted">{enabled ? "Sound ON" : "Sound OFF"}</span>
+      <span className={enabled ? "text-accent" : "text-muted"}>{enabled ? "●" : "○"}</span>
+      <span className="hidden sm:inline text-muted">{enabled ? "Sound On" : "Sound Off"}</span>
     </button>
   );
 }

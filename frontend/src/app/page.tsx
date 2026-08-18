@@ -97,9 +97,9 @@ export default function Home() {
 
             <button
               onClick={handleSurpriseMe}
-              className="text-sm text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
+              className="font-mono text-xs uppercase tracking-wide text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
             >
-              🎲 Or skip the questions — Surprise Me
+              Or skip the questions — Surprise Me
             </button>
           </motion.div>
         )}
@@ -112,10 +112,10 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center gap-6 w-full mt-16"
           >
-            <p className="font-display text-2xl text-muted tracking-widest">READY TO FLIP</p>
-            <div className="flex flex-wrap justify-center gap-2 max-w-lg">
+            <p className="font-mono text-xs uppercase tracking-[0.4em] text-accent">Ready to flip</p>
+            <div className="flex flex-wrap justify-center gap-2 max-w-lg font-mono text-xs uppercase tracking-wide">
               {summaryChips(prefs).map((c) => (
-                <span key={c} className="px-3 py-1.5 rounded-full bg-white/[0.06] text-xs text-foreground/80">
+                <span key={c} className="px-3 py-1.5 border border-hairline text-foreground/75">
                   {c}
                 </span>
               ))}
@@ -123,7 +123,7 @@ export default function Home() {
 
             <div className="flex flex-col items-center gap-4 pt-4">
               <FlipButton onClick={handleFlip} />
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
                 <button
                   onClick={() => setWizardDone(false)}
                   className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
@@ -134,10 +134,10 @@ export default function Home() {
                   onClick={handleSurpriseMe}
                   className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
                 >
-                  🎲 Surprise Me
+                  Surprise Me
                 </button>
               </div>
-              <p className="text-xs text-muted/70 max-w-xs text-center pt-2">
+              <p className="font-mono text-[11px] text-muted/70 max-w-xs text-center pt-2 italic">
                 The flip is random. The choices aren&apos;t.
               </p>
             </div>
@@ -152,8 +152,8 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center gap-10 w-full mt-24"
           >
-            <p className="font-display text-2xl sm:text-3xl text-muted tracking-widest">
-              FLIPPING THROUGH THE REEL…
+            <p className="font-mono text-xs sm:text-sm text-muted tracking-[0.3em] uppercase animate-flicker">
+              Flipping through the reel…
             </p>
             <ReelDisplay title={flip.reelTitle} blur={flip.blur} landed={flip.blur === 0} />
             <FlipButton onClick={() => {}} disabled spinning />
@@ -168,7 +168,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center w-full gap-4"
           >
-            <p className="font-display text-sm tracking-[0.3em] text-muted">NOT RANDOM. JUST UNPREDICTABLE.</p>
+            <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-accent">Not random. Just unpredictable.</p>
             <MovieResultCard rec={displayed} onFlipAgain={handleFlipAgain} onSurpriseMe={handleSurpriseMe} />
             <FlipHistory history={flip.history} activeId={displayed.movie.id} onSelect={setActiveRec} />
           </motion.div>
@@ -182,9 +182,9 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center gap-6 mt-24 text-center max-w-md"
           >
-            <p className="font-display text-3xl text-accent">Reel jammed.</p>
-            <p className="text-muted text-sm">{flip.error || "Something went wrong talking to the recommender."}</p>
-            <FlipButton onClick={handleFlip} label="TRY AGAIN" />
+            <p className="font-display italic text-3xl text-cue">Reel jammed.</p>
+            <p className="font-mono text-xs text-muted">{flip.error || "Something went wrong talking to the recommender."}</p>
+            <FlipButton onClick={handleFlip} label="Try Again" />
           </motion.div>
         )}
       </AnimatePresence>

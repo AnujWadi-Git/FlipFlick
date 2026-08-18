@@ -18,14 +18,14 @@ export function Pill({
     <motion.button
       type="button"
       onClick={onClick}
-      whileHover={{ scale: 1.045 }}
-      whileTap={{ scale: 0.96 }}
+      whileHover={{ y: -1 }}
+      whileTap={{ scale: 0.97 }}
       className={clsx(
-        "px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 outline-none",
-        "focus-visible:ring-2 focus-visible:ring-accent/70",
+        "px-4 py-2 border text-sm font-medium tracking-wide transition-colors duration-200 outline-none",
+        "focus-visible:ring-1 focus-visible:ring-accent",
         selected
-          ? "bg-foreground text-background shadow-[0_0_24px_rgba(255,255,255,0.15)]"
-          : "bg-white/[0.05] text-foreground/80 hover:bg-white/[0.09] hover:text-foreground"
+          ? "bg-accent border-accent text-[#1a1408]"
+          : "bg-transparent border-hairline text-foreground/75 hover:border-accent-dim hover:text-foreground"
       )}
       aria-pressed={selected}
     >

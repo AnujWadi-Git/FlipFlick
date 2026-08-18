@@ -82,8 +82,25 @@ def _clean_text(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
 
+_UNICODE_ESCAPE_RE = re.compile(r"\\u([0-9a-fA-F]{4})")
+
+
+def _fix_unicode_escapes(s):
+    # legacy dataset rows sometimes store literal "\uXXXX" text (never
+    # decoded) instead of the actual character, e.g. "Eugène Lourié"
+    # instead of "Eugène Lourié". Decode just those, leaving normal text alone.
+    if not isinstance(s, str) or "\\u" not in s:
+        return s
+    return _UNICODE_ESCAPE_RE.sub(lambda m: chr(int(m.group(1), 16)), s)
+
+
 def load_and_process() -> pd.DataFrame:
     df = pd.read_csv(RAW_PATH)
+
+    text_cols = ["title", "overview", "tagline", "director", "cast", "keywords", "genres"]
+    for col in text_cols:
+        if col in df.columns:
+            df[col] = df[col].apply(_fix_unicode_escapes)
 
     df = df[df["title"].notna() & df["overview"].notna()].copy()
     df["overview"] = df["overview"].fillna("")

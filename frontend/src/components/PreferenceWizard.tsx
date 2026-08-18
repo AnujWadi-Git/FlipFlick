@@ -73,15 +73,19 @@ export function PreferenceWizard({
   return (
     <div className="w-full max-w-2xl flex flex-col items-center gap-10">
       {/* progress */}
-      <div className="flex items-center gap-2">
-        {STEPS.map((s, i) => (
-          <div
-            key={s.key}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === stepIndex ? "w-8 bg-gradient-to-r from-accent to-accent-2" : i < stepIndex ? "w-4 bg-white/40" : "w-4 bg-white/10"
-            }`}
-          />
-        ))}
+      <div className="flex items-center gap-2 font-mono text-[10px] text-muted">
+        <span>{String(stepIndex + 1).padStart(2, "0")}</span>
+        <div className="flex items-center gap-1.5">
+          {STEPS.map((s, i) => (
+            <div
+              key={s.key}
+              className={`h-[3px] transition-all duration-300 ${
+                i === stepIndex ? "w-8 bg-accent" : i < stepIndex ? "w-4 bg-accent-dim" : "w-4 bg-hairline"
+              }`}
+            />
+          ))}
+        </div>
+        <span>{String(STEPS.length).padStart(2, "0")}</span>
       </div>
 
       <div className="w-full min-h-[220px] flex flex-col items-center">
@@ -96,8 +100,8 @@ export function PreferenceWizard({
             className="w-full flex flex-col items-center gap-8"
           >
             <div className="text-center space-y-2">
-              <h2 className="font-display text-4xl sm:text-5xl">{step.question}</h2>
-              {step.subtitle && <p className="text-muted text-sm">{step.subtitle}</p>}
+              <h2 className="font-display italic font-medium text-4xl sm:text-5xl">{step.question}</h2>
+              {step.subtitle && <p className="font-mono text-xs uppercase tracking-widest text-muted">{step.subtitle}</p>}
             </div>
 
             <div className="flex flex-wrap justify-center gap-3 max-w-xl">
@@ -128,11 +132,11 @@ export function PreferenceWizard({
                 ))}
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
               <button
                 onClick={back}
                 disabled={stepIndex === 0}
-                className="text-sm text-muted hover:text-foreground transition-colors disabled:opacity-0 disabled:pointer-events-none"
+                className="text-muted hover:text-foreground transition-colors disabled:opacity-0 disabled:pointer-events-none"
               >
                 ← Back
               </button>
@@ -140,7 +144,7 @@ export function PreferenceWizard({
               {step.multi && (
                 <button
                   onClick={() => goTo(stepIndex + 1, 1)}
-                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-accent to-accent-2 text-black text-sm font-semibold hover:scale-105 transition-transform"
+                  className="px-6 py-2.5 border border-accent bg-accent text-[#1a1408] hover:bg-transparent hover:text-accent transition-colors"
                 >
                   Continue
                 </button>
@@ -149,7 +153,7 @@ export function PreferenceWizard({
               {step.optional && (
                 <button
                   onClick={() => goTo(stepIndex + 1, 1)}
-                  className="text-sm text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
+                  className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
                 >
                   Skip
                 </button>

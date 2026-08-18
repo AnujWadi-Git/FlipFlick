@@ -44,11 +44,12 @@ app.add_middleware(
 _state: dict = {}
 _sessions: dict[str, dict] = {}
 
+# muted duotones consistent with the app's gold/near-black cinema palette
 POSTER_PALETTES = [
-    ["#ff5f6d", "#2b1055"], ["#ff8008", "#141e30"], ["#00c6ff", "#0d1b2a"],
-    ["#f7971e", "#1a0b2e"], ["#43cea2", "#0f2027"], ["#ee0979", "#1c1c3c"],
-    ["#f857a6", "#0d0221"], ["#4776e6", "#0b0c2a"], ["#f00000", "#1b0000"],
-    ["#834d9b", "#0a0014"],
+    ["#3d3020", "#0b0a08"], ["#4a2e2e", "#0b0a08"], ["#2e3a30", "#0b0a08"],
+    ["#3a3320", "#0b0a08"], ["#33262f", "#0b0a08"], ["#2c3438", "#0b0a08"],
+    ["#453320", "#0b0a08"], ["#2f2e3a", "#0b0a08"], ["#3f2a20", "#0b0a08"],
+    ["#2a3a3a", "#0b0a08"],
 ]
 
 
