@@ -23,7 +23,7 @@ export function FlipHistory({
           <button
             key={`${rec.movie.id}-${i}`}
             onClick={() => onSelect(rec)}
-            className={`shrink-0 px-3.5 py-2 font-mono text-xs whitespace-nowrap border transition-colors ${
+            className={`shrink-0 px-3.5 py-2 rounded-full font-mono text-xs whitespace-nowrap border transition-colors ${
               rec.movie.id === activeId
                 ? "border-accent text-accent"
                 : "border-hairline text-muted hover:text-foreground hover:border-accent-dim"

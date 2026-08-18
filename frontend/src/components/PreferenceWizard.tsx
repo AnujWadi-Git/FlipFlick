@@ -79,7 +79,7 @@ export function PreferenceWizard({
           {STEPS.map((s, i) => (
             <div
               key={s.key}
-              className={`h-[3px] transition-all duration-300 ${
+              className={`h-[3px] rounded-full transition-all duration-300 ${
                 i === stepIndex ? "w-8 bg-accent" : i < stepIndex ? "w-4 bg-accent-dim" : "w-4 bg-hairline"
               }`}
             />
@@ -144,7 +144,7 @@ export function PreferenceWizard({
               {step.multi && (
                 <button
                   onClick={() => goTo(stepIndex + 1, 1)}
-                  className="px-6 py-2.5 border border-accent bg-accent text-[#1a1408] hover:bg-transparent hover:text-accent transition-colors"
+                  className="px-6 py-2.5 rounded-full border border-accent bg-accent text-white hover:bg-transparent hover:text-accent transition-colors"
                 >
                   Continue
                 </button>

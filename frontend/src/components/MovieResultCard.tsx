@@ -40,7 +40,7 @@ export function MovieResultCard({
         <p className="text-center font-mono text-xs tracking-wide text-accent/80 mb-4">{rec.widened_notice}</p>
       )}
 
-      <div className="border border-hairline bg-surface/60 shadow-[0_30px_120px_rgba(0,0,0,0.6)]">
+      <div className="rounded-[28px] overflow-hidden border border-hairline bg-surface/60 shadow-[0_30px_120px_rgba(0,0,0,0.6)]">
         <div className="grid sm:grid-cols-[minmax(0,240px)_1fr]">
           {/* poster */}
           <div
@@ -79,7 +79,7 @@ export function MovieResultCard({
               <span>{formatRuntime(movie.runtime)}</span>
             </div>
 
-            <div className="flex items-center gap-2 border-y border-hairline py-2.5">
+            <div className="flex items-center gap-2 rounded-full border border-hairline px-4 py-2.5 w-fit">
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Rating</span>
               <span className="font-display text-2xl text-accent-solid">
                 <AnimatedNumber value={movie.rating} />/10
@@ -97,7 +97,7 @@ export function MovieResultCard({
               )}
             </div>
 
-            <div className="border border-hairline p-4">
+            <div className="rounded-2xl border border-hairline p-4">
               <p className="font-mono text-[11px] uppercase tracking-widest text-accent mb-1.5">Why this movie?</p>
               <p className="text-sm text-foreground/80 leading-relaxed">{rec.explanation}</p>
             </div>
@@ -107,21 +107,21 @@ export function MovieResultCard({
                 href={movie.trailer_search_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2.5 border border-hairline text-foreground/85 hover:border-accent-dim hover:text-foreground transition-colors"
+                className="px-5 py-2.5 rounded-full border border-hairline text-foreground/85 hover:border-accent-dim hover:text-foreground transition-colors"
               >
                 ▶ Watch Trailer
               </a>
               <button
                 onClick={onFlipAgain}
                 disabled={flipDisabled}
-                className="px-5 py-2.5 border border-accent bg-accent text-[#1a1408] hover:bg-transparent hover:text-accent transition-colors disabled:opacity-40"
+                className="px-5 py-2.5 rounded-full border border-accent bg-accent text-white hover:bg-transparent hover:text-accent transition-colors disabled:opacity-40"
               >
                 ↻ Flip Again
               </button>
               <button
                 onClick={onSurpriseMe}
                 disabled={flipDisabled}
-                className="px-5 py-2.5 border border-hairline text-foreground/85 hover:border-accent-dim hover:text-foreground transition-colors disabled:opacity-40"
+                className="px-5 py-2.5 rounded-full border border-hairline text-foreground/85 hover:border-accent-dim hover:text-foreground transition-colors disabled:opacity-40"
               >
                 ⚄ Surprise Me
               </button>

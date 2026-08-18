@@ -115,7 +115,7 @@ export default function Home() {
             <p className="font-mono text-xs uppercase tracking-[0.4em] text-accent">Ready to flip</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-lg font-mono text-xs uppercase tracking-wide">
               {summaryChips(prefs).map((c) => (
-                <span key={c} className="px-3 py-1.5 border border-hairline text-foreground/75">
+                <span key={c} className="px-3 py-1.5 rounded-full border border-hairline text-foreground/75">
                   {c}
                 </span>
               ))}
