@@ -54,7 +54,9 @@ export default function Home() {
   const handleSurpriseMe = () => {
     sound.playClick();
     setActiveRec(null);
-    flip.run(() => surpriseMeApi());
+    // Surprise Me stays on-topic: if a language/genre is already picked,
+    // it's still respected — just sampled more unpredictably.
+    flip.run(() => surpriseMeApi({ language: prefs.language, genres: prefs.genres }));
   };
 
   const handleGoHome = () => {

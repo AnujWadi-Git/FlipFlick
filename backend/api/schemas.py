@@ -16,6 +16,17 @@ class FlipIn(BaseModel):
     surprise_me: bool = False
 
 
+class SurpriseIn(BaseModel):
+    # optional: if the caller already has wizard prefs, Surprise Me stays
+    # on-topic (wider/wilder sampling) instead of ignoring them entirely.
+    language: str = "Any language"
+    genres: list[str] = Field(default_factory=list)
+
+
+class FeedbackIn(BaseModel):
+    liked: bool
+
+
 class MovieOut(BaseModel):
     id: str
     title: str

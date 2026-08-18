@@ -28,7 +28,22 @@ export async function flipAgain(sessionId: string, surpriseMe = false): Promise<
   return handle<Recommendation>(res);
 }
 
-export async function surpriseMe(): Promise<Recommendation> {
-  const res = await fetch(`${API_BASE}/api/surprise`, { method: "POST" });
+export async function surpriseMe(prefs?: Pick<Preferences, "language" | "genres">): Promise<Recommendation> {
+  const res = await fetch(`${API_BASE}/api/surprise`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      language: prefs?.language ?? "Any language",
+      genres: prefs?.genres ?? [],
+    }),
+  });
   return handle<Recommendation>(res);
+}
+
+export async function sendFeedback(sessionId: string, movieId: string, liked: boolean): Promise<void> {
+  await fetch(`${API_BASE}/api/session/${sessionId}/feedback?movie_id=${encodeURIComponent(movieId)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ liked }),
+  });
 }

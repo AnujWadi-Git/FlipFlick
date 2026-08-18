@@ -27,7 +27,7 @@ from embeddings import load_embeddings  # noqa: E402
 from recommender import Recommender, Preferences  # noqa: E402
 
 from schemas import (  # noqa: E402
-    PreferencesIn, FlipIn, MovieOut, MLInsights, RecommendationOut,
+    PreferencesIn, FlipIn, SurpriseIn, FeedbackIn, MovieOut, MLInsights, RecommendationOut,
 )
 from poster_service import get_poster_url  # noqa: E402
 
@@ -115,6 +115,39 @@ def _build_insights(pool_info: dict, chosen: pd.Series) -> MLInsights:
     )
 
 
+def _apply_diversity_penalty(pool: pd.DataFrame, chosen: pd.Series) -> None:
+    """After a movie is shown, nudge its director/keyword neighbors down in
+    the cached pool so the next flip in this session doesn't just resurface
+    a near-duplicate. Mutates `pool` in place."""
+    director = chosen["director"]
+    chosen_keywords = set(chosen["keywords_list"])
+
+    def penalty(row) -> float:
+        p = 0.0
+        if row["movie_id"] == chosen["movie_id"]:
+            return p
+        if row["director"] == director:
+            p += 0.06
+        if chosen_keywords:
+            overlap = len(set(row["keywords_list"]) & chosen_keywords)
+            p += min(overlap / 12, 0.05)
+        return p
+
+    pool["ml_score"] = pool["ml_score"] - pool.apply(penalty, axis=1)
+
+
+def _apply_genre_feedback(pool: pd.DataFrame, feedback: dict[str, float]) -> None:
+    """Ephemeral, session-only genre bias from 👍/👎 feedback — never
+    persisted, discarded when the session ends."""
+    if not feedback:
+        return
+
+    def bump(row) -> float:
+        return sum(feedback.get(g, 0.0) for g in row["genres_list"])
+
+    pool["ml_score"] = pool["ml_score"] + pool.apply(bump, axis=1)
+
+
 async def _respond(session_id: str, session: dict, pool_info: dict, chosen: pd.Series, prefs: Preferences):
     recommender: Recommender = _state["recommender"]
     movie_out = await _serialize_movie(chosen)
@@ -126,6 +159,8 @@ async def _respond(session_id: str, session: dict, pool_info: dict, chosen: pd.S
 
     session["shown_ids"].append(str(chosen["movie_id"]))
     session["flip_count"] += 1
+    # diversify future flips in this session away from this pick's director/keywords
+    _apply_diversity_penalty(pool_info["pool"], chosen)
 
     return RecommendationOut(
         session_id=session_id,
@@ -160,7 +195,7 @@ async def create_session(prefs_in: PreferencesIn):
     chosen = recommender.sample(pool_info["pool"], exclude_ids=[])
 
     session_id = str(uuid.uuid4())
-    session = {"prefs": prefs, "pool_info": pool_info, "shown_ids": [], "flip_count": 0}
+    session = {"prefs": prefs, "pool_info": pool_info, "shown_ids": [], "flip_count": 0, "genre_feedback": {}}
     _sessions[session_id] = session
 
     return await _respond(session_id, session, pool_info, chosen, prefs)
@@ -183,16 +218,57 @@ async def flip_again(session_id: str, body: FlipIn):
 
 
 @app.post("/api/surprise", response_model=RecommendationOut)
-async def surprise_me():
-    """Bypasses most filters — high quality, maximally unpredictable."""
+async def surprise_me(body: SurpriseIn = SurpriseIn()):
+    """
+    Wilder and less predictable than a normal flip, but NOT a free-for-all:
+    if the caller has a language/genre already picked, Surprise Me keeps
+    those as real filters (just skips rating/era/runtime) and flattens the
+    score distribution for variety. Ignoring genre entirely here was the
+    bug behind "I picked Horror and got Spider-Man" — Surprise Me must
+    still respect whatever the user actually asked for.
+    """
     recommender: Recommender = _state["recommender"]
-    prefs = Preferences(language="Any language", genres=[], min_rating=6.5, era="surprise", runtime="surprise")
+    prefs = Preferences(
+        language=body.language,
+        genres=body.genres,
+        min_rating=0.0,
+        era="surprise",
+        runtime="surprise",
+    )
 
     pool_info = recommender.build_pool(prefs)
     chosen = recommender.sample(pool_info["pool"], exclude_ids=[], surprise_me=True)
 
     session_id = str(uuid.uuid4())
-    session = {"prefs": prefs, "pool_info": pool_info, "shown_ids": [], "flip_count": 0}
+    session = {"prefs": prefs, "pool_info": pool_info, "shown_ids": [], "flip_count": 0, "genre_feedback": {}}
     _sessions[session_id] = session
 
     return await _respond(session_id, session, pool_info, chosen, prefs)
+
+
+@app.post("/api/session/{session_id}/feedback", response_model=dict)
+async def feedback(session_id: str, movie_id: str, body: FeedbackIn):
+    """
+    👍/👎 on a shown movie. Ephemeral and session-scoped only — nudges this
+    session's remaining candidate pool toward/away from that movie's
+    genres. Nothing is persisted once the session ends (FlipFlick has no
+    accounts/storage to persist it to, and shouldn't invent one for this).
+    """
+    session = _sessions.get(session_id)
+    if not session:
+        raise HTTPException(404, "Session not found — start a new flip.")
+
+    df: pd.DataFrame = _state["df"]
+    match = df[df["movie_id"] == movie_id]
+    if match.empty:
+        raise HTTPException(404, "Unknown movie_id for this catalogue.")
+    movie = match.iloc[0]
+
+    delta = 0.06 if body.liked else -0.06
+    feedback_state = session["genre_feedback"]
+    for g in movie["genres_list"]:
+        feedback_state[g] = max(-0.2, min(0.2, feedback_state.get(g, 0.0) + delta))
+
+    _apply_genre_feedback(session["pool_info"]["pool"], {g: delta for g in movie["genres_list"]})
+
+    return {"status": "ok", "genre_bias": feedback_state}
