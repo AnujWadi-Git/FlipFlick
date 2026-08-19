@@ -27,6 +27,15 @@ class FeedbackIn(BaseModel):
     liked: bool
 
 
+class ReviewIn(BaseModel):
+    stars: int = Field(ge=1, le=5)
+
+
+class ReviewStatsOut(BaseModel):
+    count: int
+    average: float
+
+
 class MovieOut(BaseModel):
     id: str
     title: str

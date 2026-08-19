@@ -1,4 +1,4 @@
-import { Preferences, Recommendation } from "./types";
+import { Preferences, Recommendation, ReviewStats } from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -46,4 +46,18 @@ export async function sendFeedback(sessionId: string, movieId: string, liked: bo
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ liked }),
   });
+}
+
+export async function submitReview(stars: number): Promise<ReviewStats> {
+  const res = await fetch(`${API_BASE}/api/reviews`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ stars }),
+  });
+  return handle<ReviewStats>(res);
+}
+
+export async function getReviewStats(): Promise<ReviewStats> {
+  const res = await fetch(`${API_BASE}/api/reviews/stats`);
+  return handle<ReviewStats>(res);
 }

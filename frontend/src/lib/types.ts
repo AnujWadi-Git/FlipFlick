@@ -45,3 +45,8 @@ export interface Preferences {
   mood: string | null;
   runtime: string;
 }
+
+export interface ReviewStats {
+  count: number;
+  average: number;
+}

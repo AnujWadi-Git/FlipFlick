@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { getReviewStats } from "@/lib/api";
+import { ReviewStats } from "@/lib/types";
 
 const TITLE = "FLIPFLICK";
 
@@ -14,6 +17,12 @@ const letterVariants = {
 };
 
 export function IntroTitle() {
+  const [stats, setStats] = useState<ReviewStats | null>(null);
+
+  useEffect(() => {
+    getReviewStats().then(setStats).catch(() => {});
+  }, []);
+
   return (
     <div className="text-center space-y-5">
       <p className="font-mono text-[10px] sm:text-xs tracking-[0.5em] text-accent/80 animate-flicker">
@@ -45,6 +54,17 @@ export function IntroTitle() {
       >
         You pick the vibe. We pick the movie.
       </motion.p>
+      {stats && stats.count > 0 && (
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 0.6 }}
+          className="font-mono text-[10px] sm:text-xs tracking-widest text-muted-soft uppercase"
+        >
+          ★ {stats.average.toFixed(1)}/5 accuracy — Reviewed by {stats.count.toLocaleString()}{" "}
+          {stats.count === 1 ? "person" : "people"}
+        </motion.p>
+      )}
     </div>
   );
 }

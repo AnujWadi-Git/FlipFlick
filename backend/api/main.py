@@ -28,9 +28,11 @@ from embeddings import load_embeddings  # noqa: E402
 from recommender import Recommender, Preferences  # noqa: E402
 
 from schemas import (  # noqa: E402
-    PreferencesIn, FlipIn, SurpriseIn, FeedbackIn, MovieOut, MLInsights, RecommendationOut,
+    PreferencesIn, FlipIn, SurpriseIn, FeedbackIn, ReviewIn, ReviewStatsOut,
+    MovieOut, MLInsights, RecommendationOut,
 )
 from poster_service import get_poster_url  # noqa: E402
+import reviews_store  # noqa: E402
 
 app = FastAPI(title="FlipFlick API")
 
@@ -283,3 +285,16 @@ async def feedback(session_id: str, movie_id: str, body: FeedbackIn):
     _apply_genre_feedback(session["pool_info"]["pool"], {g: delta for g in movie["genres_list"]})
 
     return {"status": "ok", "genre_bias": feedback_state}
+
+
+@app.post("/api/reviews", response_model=ReviewStatsOut)
+async def submit_review(body: ReviewIn):
+    """1-5 star rating of 'how accurate was this pick', aggregated across
+    all visitors — persisted in Redis (see reviews_store) since this is
+    meant to survive restarts, unlike everything else in this API."""
+    return await reviews_store.record_review(body.stars)
+
+
+@app.get("/api/reviews/stats", response_model=ReviewStatsOut)
+async def review_stats():
+    return await reviews_store.get_review_stats()

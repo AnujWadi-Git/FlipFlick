@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Recommendation } from "@/lib/types";
 import { AnimatedNumber } from "./AnimatedNumber";
+import { StarRating } from "./StarRating";
 
 const LANGUAGE_NAMES: Record<string, string> = {
   en: "English", fr: "French", hi: "Hindi", es: "Spanish", ko: "Korean",
@@ -101,6 +102,8 @@ export function MovieResultCard({
               <p className="font-mono text-[11px] uppercase tracking-widest text-accent mb-1.5">Why this movie?</p>
               <p className="text-sm text-foreground/80 leading-relaxed">{rec.explanation}</p>
             </div>
+
+            <StarRating key={movie.id} />
 
             <div className="flex flex-wrap gap-3 pt-1 font-mono text-xs uppercase tracking-wide font-semibold">
               <a
