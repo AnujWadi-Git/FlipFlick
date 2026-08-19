@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: flipflick-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: TMDB_API_KEY
+        sync: false # set manually in the Render dashboard — never committed

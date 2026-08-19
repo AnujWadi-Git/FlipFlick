@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:static": "STATIC_EXPORT=true NEXT_PUBLIC_API_URL=https://flipflick-backend.onrender.com next build"
   },
   "dependencies": {
     "clsx": "^2.1.1",

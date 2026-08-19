@@ -6,6 +6,7 @@ Startup loads the pre-built dataset + TF-IDF artifacts once into memory
 from RAM, which is what keeps a "flip" fast enough to never need a
 loading spinner in front of the reel animation.
 """
+import os
 import sys
 import urllib.parse
 import uuid
@@ -33,9 +34,19 @@ from poster_service import get_poster_url  # noqa: E402
 
 app = FastAPI(title="FlipFlick API")
 
+# Extra production origins (e.g. "https://anujwadi.com,https://www.anujwadi.com")
+# can be added via the ALLOWED_ORIGINS env var without touching code.
+_extra_origins = [o.strip() for o in os.environ.get("ALLOWED_ORIGINS", "").split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://anujwadi.com",
+        "https://www.anujwadi.com",
+        *_extra_origins,
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
