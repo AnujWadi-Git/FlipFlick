@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Recommendation } from "@/lib/types";
 
 export function FlipHistory({
@@ -20,9 +21,13 @@ export function FlipHistory({
       </p>
       <div className="flex gap-2 overflow-x-auto scroll-thin pb-2">
         {history.map((rec, i) => (
-          <button
+          <motion.button
             key={`${rec.movie.id}-${i}`}
             onClick={() => onSelect(rec)}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
+            whileHover={{ y: -1 }}
             className={`shrink-0 px-3.5 py-2 rounded-full font-mono text-xs whitespace-nowrap border transition-colors ${
               rec.movie.id === activeId
                 ? "border-accent text-accent"
@@ -30,7 +35,7 @@ export function FlipHistory({
             }`}
           >
             {String(i + 1).padStart(2, "0")} — {rec.movie.title}
-          </button>
+          </motion.button>
         ))}
       </div>
     </div>

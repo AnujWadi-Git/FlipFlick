@@ -41,7 +41,7 @@ export function MovieResultCard({
         <p className="text-center font-mono text-xs tracking-wide text-accent/80 mb-4">{rec.widened_notice}</p>
       )}
 
-      <div className="overflow-hidden border border-hairline bg-surface/60">
+      <div className="group overflow-hidden border border-hairline bg-surface/60 backdrop-blur-sm transition-[box-shadow,border-color] duration-500 hover:border-accent/40 hover:shadow-[0_0_60px_-15px_rgba(218,41,28,0.35)]">
         <div className="grid sm:grid-cols-[minmax(0,240px)_1fr]">
           {/* poster */}
           <div
