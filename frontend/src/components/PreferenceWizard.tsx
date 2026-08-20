@@ -112,7 +112,7 @@ export function PreferenceWizard({
             </div>
 
             {step.key === "language" && (
-              <div className="flex flex-nowrap justify-center gap-1.5 sm:gap-2.5 w-full px-1">
+              <div className="flex flex-wrap sm:flex-nowrap justify-center gap-1.5 sm:gap-2.5 w-full px-1">
                 {LANGUAGES.map((l) => (
                   <Pill
                     key={l}
