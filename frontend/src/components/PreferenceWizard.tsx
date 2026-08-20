@@ -71,7 +71,7 @@ export function PreferenceWizard({
   };
 
   return (
-    <div className="w-full max-w-2xl flex flex-col items-center gap-10">
+    <div className="w-full max-w-4xl flex flex-col items-center gap-10">
       {/* progress */}
       <div className="flex items-center gap-2 font-mono text-[10px] text-muted">
         <span>{String(stepIndex + 1).padStart(2, "0")}</span>
