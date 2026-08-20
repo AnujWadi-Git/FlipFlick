@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { BackgroundDotGrid } from "@/components/BackgroundDotGrid";
+import { Vignette } from "@/components/Vignette";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <BackgroundDotGrid />
+        <Vignette />
         <div className="relative z-10 flex flex-col min-h-full">{children}</div>
       </body>
     </html>

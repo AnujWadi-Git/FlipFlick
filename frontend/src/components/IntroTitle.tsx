@@ -26,10 +26,23 @@ export function IntroTitle() {
 
   return (
     <div className="relative text-center space-y-5">
+      {/* projector beam — a tall, narrow light source originating above the
+          frame, like a beam cutting through a dark theater from the booth.
+          Sits behind the screen-glow below, which is where the beam "lands." */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.5, 0.7, 0.55, 0.7] }}
+        transition={{ opacity: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
+        className="pointer-events-none absolute left-1/2 -top-[60vh] -z-10 h-[85vh] w-[60vw] max-w-[640px] -translate-x-1/2"
+        style={{
+          background: "radial-gradient(ellipse 45% 100% at 50% 100%, rgba(255,238,222,0.16), transparent 70%)",
+        }}
+      />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(218,41,28,0.35) 0%, transparent 70%)" }}
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(218,41,28,0.4) 0%, transparent 70%)" }}
       />
       <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3.5 py-1.5 font-mono text-[10px] sm:text-xs tracking-[0.4em] text-accent/90 animate-flicker">
         <span className="h-1.5 w-1.5 rounded-full bg-accent" />
