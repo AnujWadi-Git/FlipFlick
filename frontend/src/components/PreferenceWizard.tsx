@@ -103,22 +103,27 @@ export function PreferenceWizard({
               {step.subtitle && <p className="font-mono text-xs uppercase tracking-widest text-muted">{step.subtitle}</p>}
             </div>
 
-            <div className="flex flex-wrap justify-center gap-3 max-w-xl">
-              {step.key === "language" &&
-                LANGUAGES.map((l) => (
+            {step.key === "language" && (
+              <div className="flex flex-nowrap justify-center gap-1.5 sm:gap-2.5 w-full px-1">
+                {LANGUAGES.map((l) => (
                   <Pill
                     key={l}
                     label={l}
+                    compact
                     selected={!!touched.language && prefs.language === l}
                     onClick={() => selectSingle("language", l)}
                   />
                 ))}
+              </div>
+            )}
 
-              {step.key === "genre" &&
-                GENRES.map((g) => (
+            {step.key === "genre" && (
+              <div className="flex flex-wrap justify-center gap-3 max-w-xl">
+                {GENRES.map((g) => (
                   <Pill key={g} label={g} selected={prefs.genres.includes(g)} onClick={() => toggleGenre(g)} />
                 ))}
-            </div>
+              </div>
+            )}
 
             <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
               <button

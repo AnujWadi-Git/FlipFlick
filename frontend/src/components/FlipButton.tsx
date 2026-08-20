@@ -46,17 +46,13 @@ export function FlipButton({
       style={{ x, y }}
       whileHover={!disabled ? { y: -2 } : undefined}
       whileTap={!disabled ? { scale: 0.97 } : undefined}
-      className={`group relative w-full sm:w-auto px-14 py-5 font-mono text-lg sm:text-xl tracking-[0.15em] uppercase font-bold
-        border border-accent bg-accent text-white overflow-hidden
-        transition-[background-color,border-color,box-shadow] duration-200
-        hover:bg-accent-hover hover:border-accent-hover hover:shadow-[0_8px_40px_-8px_rgba(218,41,28,0.6)]
-        disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-accent`}
+      className="pearl-btn group w-full sm:w-auto disabled:opacity-40"
     >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
-      />
-      <span className="relative">{spinning ? "Flipping…" : label}</span>
+      <div className="pearl-wrap px-14 py-5">
+        <span className="relative font-mono text-lg sm:text-xl tracking-[0.15em] uppercase font-bold text-white">
+          {spinning ? "Flipping…" : label}
+        </span>
+      </div>
     </motion.button>
   );
 }
