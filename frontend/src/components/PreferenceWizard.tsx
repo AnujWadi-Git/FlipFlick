@@ -87,7 +87,7 @@ export function PreferenceWizard({
         <span>{String(STEPS.length).padStart(2, "0")}</span>
       </div>
 
-      <div className="w-full min-h-[220px] flex flex-col items-center">
+      <div className="w-full min-h-[260px] flex flex-col items-center border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-10 sm:px-10">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={step.key}
