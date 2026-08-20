@@ -6,6 +6,8 @@ import { Recommendation } from "@/lib/types";
 import { AnimatedNumber } from "./AnimatedNumber";
 import { StarRating } from "./StarRating";
 import { Badge } from "./Badge";
+import { Button } from "./Button";
+import { buttonClass } from "@/lib/buttonStyles";
 
 const LANGUAGE_NAMES: Record<string, string> = {
   en: "English", fr: "French", hi: "Hindi", es: "Spanish", ko: "Korean",
@@ -139,35 +141,23 @@ export function MovieResultCard({
 
             <StarRating key={movie.id} />
 
-            <div className="flex flex-wrap gap-3 pt-1 font-mono text-xs uppercase tracking-wide font-semibold">
+            <div className="flex flex-wrap gap-3 pt-1">
               <motion.a
                 href={movie.trailer_search_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="px-5 py-3 border border-hairline text-foreground/85 hover:border-accent hover:text-foreground transition-colors"
+                className={buttonClass("secondary", "md")}
               >
                 ▶ Watch Trailer
               </motion.a>
-              <motion.button
-                onClick={onFlipAgain}
-                disabled={flipDisabled}
-                whileHover={!flipDisabled ? { y: -2 } : undefined}
-                whileTap={!flipDisabled ? { scale: 0.97 } : undefined}
-                className="px-5 py-3 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors disabled:opacity-40"
-              >
+              <Button onClick={onFlipAgain} disabled={flipDisabled} variant="primary" size="md">
                 ↻ Flip Again
-              </motion.button>
-              <motion.button
-                onClick={onSurpriseMe}
-                disabled={flipDisabled}
-                whileHover={!flipDisabled ? { y: -2 } : undefined}
-                whileTap={!flipDisabled ? { scale: 0.97 } : undefined}
-                className="px-5 py-3 border border-hairline text-foreground/85 hover:border-accent hover:text-foreground transition-colors disabled:opacity-40"
-              >
+              </Button>
+              <Button onClick={onSurpriseMe} disabled={flipDisabled} variant="secondary" size="md">
                 ⚄ Surprise Me
-              </motion.button>
+              </Button>
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import { MovieResultCard } from "@/components/MovieResultCard";
 import { FlipHistory } from "@/components/FlipHistory";
 import { SoundToggle } from "@/components/SoundToggle";
 import { HomeLogoButton } from "@/components/HomeLogoButton";
+import { buttonClass } from "@/lib/buttonStyles";
 import { useSound } from "@/hooks/useSound";
 import { useFlipSequence } from "@/hooks/useFlipSequence";
 import { startSession, flipAgain, surpriseMe as surpriseMeApi } from "@/lib/api";
@@ -95,10 +96,7 @@ export default function Home() {
 
             <PreferenceWizard prefs={prefs} onChange={setPrefs} onComplete={() => setWizardDone(true)} />
 
-            <button
-              onClick={handleSurpriseMe}
-              className="font-mono text-xs uppercase tracking-wide text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
-            >
+            <button onClick={handleSurpriseMe} className={buttonClass("ghost")}>
               Or skip the questions — Surprise Me
             </button>
           </motion.div>
@@ -123,17 +121,11 @@ export default function Home() {
 
             <div className="flex flex-col items-center gap-4 pt-4">
               <FlipButton onClick={handleFlip} />
-              <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
-                <button
-                  onClick={() => setWizardDone(false)}
-                  className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
-                >
+              <div className="flex items-center gap-4">
+                <button onClick={() => setWizardDone(false)} className={buttonClass("ghost")}>
                   ← Edit preferences
                 </button>
-                <button
-                  onClick={handleSurpriseMe}
-                  className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
-                >
+                <button onClick={handleSurpriseMe} className={buttonClass("ghost")}>
                   Surprise Me
                 </button>
               </div>

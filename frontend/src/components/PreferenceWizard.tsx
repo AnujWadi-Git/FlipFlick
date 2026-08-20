@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Preferences } from "@/lib/types";
 import { GENRES, LANGUAGES } from "@/lib/constants";
 import { Pill } from "./Pill";
+import { Button } from "./Button";
 
 type StepKey = "language" | "genre";
 
@@ -87,11 +88,7 @@ export function PreferenceWizard({
         <span>{String(STEPS.length).padStart(2, "0")}</span>
       </div>
 
-      <motion.div
-        layout
-        transition={{ layout: { duration: 0.32, ease: [0.2, 0.8, 0.2, 1] } }}
-        className="w-full flex flex-col items-center border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-10 sm:px-10"
-      >
+      <div className="w-full flex flex-col items-center border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-10 sm:px-10">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={step.key}
@@ -138,12 +135,9 @@ export function PreferenceWizard({
                 )}
 
                 {step.multi && (
-                  <button
-                    onClick={() => goTo(stepIndex + 1, 1)}
-                    className="px-8 py-3.5 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors"
-                  >
+                  <Button onClick={() => goTo(stepIndex + 1, 1)} variant="primary" size="md">
                     Continue
-                  </button>
+                  </Button>
                 )}
 
                 {step.optional && (
@@ -158,7 +152,7 @@ export function PreferenceWizard({
             )}
           </motion.div>
         </AnimatePresence>
-      </motion.div>
+      </div>
     </div>
   );
 }
