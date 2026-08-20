@@ -71,25 +71,25 @@ export default function Home() {
   const displayed = activeRec ?? flip.result;
 
   return (
-    <main className="min-h-screen flex flex-col items-center px-5 sm:px-8 py-14 sm:py-20 gap-12">
+    <main className="relative h-[100dvh] overflow-hidden flex flex-col items-center justify-center px-5 sm:px-8 gap-6">
       <HomeLogoButton onClick={handleGoHome} />
       <SoundToggle enabled={sound.enabled} onToggle={sound.toggle} />
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         {flip.phase === "idle" && !wizardDone && (
           <motion.div
             key="wizard"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center gap-12 w-full"
+            className="flex flex-col items-center gap-6 w-full"
           >
             <IntroTitle />
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
-              className="text-center text-muted -mt-6 max-w-md text-sm sm:text-base"
+              className="text-center text-muted max-w-md text-sm sm:text-base"
             >
               Stop scrolling. Flip for a movie. Tell us what you&apos;re feeling — we&apos;ll make the decision.
             </motion.p>
@@ -108,7 +108,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center gap-6 w-full mt-16"
+            className="flex flex-col items-center gap-6 w-full"
           >
             <p className="font-mono text-xs uppercase tracking-[0.4em] text-accent">Ready to flip</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-lg font-mono text-xs uppercase tracking-wide">
@@ -142,7 +142,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center gap-10 w-full mt-24"
+            className="flex flex-col items-center gap-10 w-full"
           >
             <p className="font-mono text-xs sm:text-sm text-muted tracking-[0.3em] uppercase animate-flicker">
               Flipping through the reel…
@@ -158,9 +158,9 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center w-full gap-4"
+            className="flex flex-col items-center w-full gap-3"
           >
-            <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-accent">Not random. Just unpredictable.</p>
+            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-accent">Not random. Just unpredictable.</p>
             <MovieResultCard rec={displayed} onFlipAgain={handleFlipAgain} onSurpriseMe={handleSurpriseMe} />
             <FlipHistory history={flip.history} activeId={displayed.movie.id} onSelect={setActiveRec} />
           </motion.div>
@@ -172,7 +172,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center gap-6 mt-24 text-center max-w-md"
+            className="flex flex-col items-center gap-6 text-center max-w-md"
           >
             <p className="font-display text-3xl text-cue">Reel jammed.</p>
             <p className="font-mono text-xs text-muted">{flip.error || "Something went wrong talking to the recommender."}</p>

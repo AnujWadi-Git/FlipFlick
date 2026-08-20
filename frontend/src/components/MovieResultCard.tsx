@@ -69,10 +69,10 @@ export function MovieResultCard({
               "radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(218,41,28,0.08), transparent 70%)",
           }}
         />
-        <div className="grid sm:grid-cols-[minmax(0,240px)_1fr]">
+        <div className="grid sm:grid-cols-[minmax(0,190px)_1fr]">
           {/* poster */}
           <div
-            className="relative aspect-[2/3] sm:aspect-auto sm:h-full min-h-[220px] flex items-center justify-center overflow-hidden border-b sm:border-b-0 sm:border-r border-hairline"
+            className="relative aspect-[2/3] sm:aspect-auto sm:h-full min-h-[140px] flex items-center justify-center overflow-hidden border-b sm:border-b-0 sm:border-r border-hairline"
             style={{ background: movie.poster_url ? undefined : `linear-gradient(155deg, ${colorA}, ${colorB})` }}
           >
             {movie.poster_url ? (
@@ -96,67 +96,59 @@ export function MovieResultCard({
           </div>
 
           {/* details */}
-          <div className="p-6 sm:p-8 space-y-5">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-accent mb-1.5">The movie tonight</p>
-              <h2 className="font-cinematic text-5xl sm:text-6xl">{movie.title}</h2>
-            </div>
+          <div className="p-4 sm:p-5 space-y-2.5 min-w-0">
+            <h2 className="font-cinematic text-3xl sm:text-4xl leading-none">{movie.title}</h2>
 
             <div className="flex flex-wrap items-center gap-1.5">
               <Badge>{movie.year}</Badge>
-              {movie.genres.slice(0, 3).map((g) => (
+              {movie.genres.slice(0, 2).map((g) => (
                 <Badge key={g}>{g}</Badge>
               ))}
               <Badge>{LANGUAGE_NAMES[movie.language] || movie.language.toUpperCase()}</Badge>
               <Badge>{formatRuntime(movie.runtime)}</Badge>
             </div>
 
-            <div className="flex items-center gap-4 border border-hairline bg-background/40 px-4 py-3">
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-display font-bold text-3xl text-accent-solid leading-none">
+            <div className="flex items-center gap-3 border border-hairline bg-background/40 px-3 py-1.5">
+              <div className="flex items-baseline gap-1">
+                <span className="font-display font-bold text-xl text-accent-solid leading-none">
                   <AnimatedNumber value={movie.rating} />
                 </span>
-                <span className="font-mono text-xs text-muted">/10</span>
+                <span className="font-mono text-[10px] text-muted">/10</span>
               </div>
-              <div className="h-8 w-px bg-hairline" />
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted leading-tight">
-                <p>Audience Score</p>
-                <p className="text-foreground/60">{movie.vote_count.toLocaleString()} votes</p>
-              </div>
+              <div className="h-5 w-px bg-hairline" />
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+                {movie.vote_count.toLocaleString()} votes
+              </p>
             </div>
 
-            {movie.tagline && <p className="font-display text-foreground/70 text-base">&ldquo;{movie.tagline}&rdquo;</p>}
-            <p className="text-sm leading-relaxed text-foreground/80 line-clamp-4">{movie.overview}</p>
+            <p className="text-xs leading-snug text-foreground/80 line-clamp-2">{movie.overview}</p>
 
-            <div className="font-mono text-xs text-muted space-y-1">
-              <p><span className="text-foreground/60">Director</span> — {movie.director}</p>
-              {movie.cast.length > 0 && (
-                <p><span className="text-foreground/60">Cast</span> — {movie.cast.join(", ")}</p>
-              )}
-            </div>
+            <p className="font-mono text-[10px] text-muted truncate">
+              <span className="text-foreground/60">Director</span> — {movie.director}
+            </p>
 
-            <div className="border-l-2 border-accent bg-background/40 p-4">
-              <p className="font-mono text-[11px] uppercase tracking-widest text-accent mb-1.5">Why this movie?</p>
-              <p className="text-sm text-foreground/80 leading-relaxed">{rec.explanation}</p>
+            <div className="border-l-2 border-accent bg-background/40 px-3 py-2">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-accent mb-0.5">Why this movie?</p>
+              <p className="text-xs text-foreground/80 leading-snug line-clamp-2">{rec.explanation}</p>
             </div>
 
             <StarRating key={movie.id} />
 
-            <div className="flex flex-wrap gap-3 pt-1">
+            <div className="flex flex-wrap gap-2 pt-0.5">
               <motion.a
                 href={movie.trailer_search_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className={buttonClass("secondary", "md")}
+                className={buttonClass("secondary", "sm")}
               >
-                ▶ Watch Trailer
+                ▶ Trailer
               </motion.a>
-              <Button onClick={onFlipAgain} disabled={flipDisabled} variant="primary" size="md">
+              <Button onClick={onFlipAgain} disabled={flipDisabled} variant="primary" size="sm">
                 ↻ Flip Again
               </Button>
-              <Button onClick={onSurpriseMe} disabled={flipDisabled} variant="secondary" size="md">
+              <Button onClick={onSurpriseMe} disabled={flipDisabled} variant="secondary" size="sm">
                 ⚄ Surprise Me
               </Button>
             </div>

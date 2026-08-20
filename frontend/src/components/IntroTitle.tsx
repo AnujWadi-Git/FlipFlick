@@ -25,7 +25,7 @@ export function IntroTitle() {
   }, []);
 
   return (
-    <div className="relative text-center space-y-5">
+    <div className="relative text-center space-y-3">
       {/* soft red glow behind the title — a circle with a heavy blur, so it
           fades to nothing well before its own box edge (a hard-edged or
           under-blurred glow shape reads as a visible rectangle, which is
@@ -39,12 +39,8 @@ export function IntroTitle() {
         className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
         style={{ background: "radial-gradient(circle, rgba(218,41,28,0.5) 0%, transparent 65%)" }}
       />
-      <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3.5 py-1.5 font-mono text-[10px] sm:text-xs tracking-[0.4em] text-accent/90 animate-flicker">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-        REEL 01 — TONIGHT&apos;S SCREENING
-      </span>
       <h1
-        className="font-cinematic text-[16vw] sm:text-[6.5rem] flex justify-center flex-wrap"
+        className="font-cinematic text-[14vw] sm:text-[5.5rem] flex justify-center flex-wrap"
         style={{ perspective: 600 }}
       >
         {TITLE.split("").map((ch, i) => (

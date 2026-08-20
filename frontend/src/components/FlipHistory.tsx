@@ -15,8 +15,8 @@ export function FlipHistory({
   if (history.length < 2) return null;
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-6">
-      <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted mb-2.5">
+    <div className="w-full max-w-4xl mx-auto">
+      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-1.5">
         Tonight&apos;s flips
       </p>
       <div className="flex gap-2 overflow-x-auto scroll-thin pb-2">
