@@ -13,9 +13,12 @@ import uuid
 from pathlib import Path
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BACKEND_DIR / "ml"))
@@ -35,6 +38,13 @@ from poster_service import get_poster_url  # noqa: E402
 import reviews_store  # noqa: E402
 
 app = FastAPI(title="FlipFlick API")
+
+# Per-IP rate limiting so a script can't hammer the recommender or spam
+# fake star ratings. Generous enough for real use (a person flipping
+# repeatedly), tight enough to make scripted abuse pointless.
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Extra production origins (e.g. "https://anujwadi.com,https://www.anujwadi.com")
 # can be added via the ALLOWED_ORIGINS env var without touching code.
@@ -187,7 +197,8 @@ async def _respond(session_id: str, session: dict, pool_info: dict, chosen: pd.S
 
 # ---------------------------------------------------------------- routes
 @app.post("/api/session", response_model=RecommendationOut)
-async def create_session(prefs_in: PreferencesIn):
+@limiter.limit("20/minute")
+async def create_session(request: Request, prefs_in: PreferencesIn):
     recommender: Recommender = _state["recommender"]
     if not recommender:
         raise HTTPException(503, "Model not loaded")
@@ -215,7 +226,8 @@ async def create_session(prefs_in: PreferencesIn):
 
 
 @app.post("/api/session/{session_id}/flip", response_model=RecommendationOut)
-async def flip_again(session_id: str, body: FlipIn):
+@limiter.limit("60/minute")
+async def flip_again(request: Request, session_id: str, body: FlipIn):
     session = _sessions.get(session_id)
     if not session:
         raise HTTPException(404, "Session not found. Start a new flip.")
@@ -231,7 +243,8 @@ async def flip_again(session_id: str, body: FlipIn):
 
 
 @app.post("/api/surprise", response_model=RecommendationOut)
-async def surprise_me(body: SurpriseIn = SurpriseIn()):
+@limiter.limit("30/minute")
+async def surprise_me(request: Request, body: SurpriseIn = SurpriseIn()):
     """
     Wilder and less predictable than a normal flip, but NOT a free-for-all:
     if the caller has a language/genre already picked, Surprise Me keeps
@@ -260,7 +273,8 @@ async def surprise_me(body: SurpriseIn = SurpriseIn()):
 
 
 @app.post("/api/session/{session_id}/feedback", response_model=dict)
-async def feedback(session_id: str, movie_id: str, body: FeedbackIn):
+@limiter.limit("60/minute")
+async def feedback(request: Request, session_id: str, movie_id: str, body: FeedbackIn):
     """
     👍/👎 on a shown movie. Ephemeral and session-scoped only — nudges this
     session's remaining candidate pool toward/away from that movie's
@@ -288,7 +302,8 @@ async def feedback(session_id: str, movie_id: str, body: FeedbackIn):
 
 
 @app.post("/api/reviews", response_model=ReviewStatsOut)
-async def submit_review(body: ReviewIn):
+@limiter.limit("10/minute")
+async def submit_review(request: Request, body: ReviewIn):
     """1-5 star rating of 'how accurate was this pick', aggregated across
     all visitors — persisted in Redis (see reviews_store) since this is
     meant to survive restarts, unlike everything else in this API."""
@@ -296,5 +311,6 @@ async def submit_review(body: ReviewIn):
 
 
 @app.get("/api/reviews/stats", response_model=ReviewStatsOut)
-async def review_stats():
+@limiter.limit("60/minute")
+async def review_stats(request: Request):
     return await reviews_store.get_review_stats()
