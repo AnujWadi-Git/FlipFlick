@@ -1,9 +1,13 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Recommendation } from "@/lib/types";
 import { AnimatedNumber } from "./AnimatedNumber";
 import { StarRating } from "./StarRating";
+import { Badge } from "./Badge";
+import { Button } from "./Button";
+import { buttonClass } from "@/lib/buttonStyles";
 
 const LANGUAGE_NAMES: Record<string, string> = {
   en: "English", fr: "French", hi: "Hindi", es: "Spanish", ko: "Korean",
@@ -29,6 +33,15 @@ export function MovieResultCard({
 }) {
   const { movie } = rec;
   const [colorA, colorB] = movie.poster_seed.split(",");
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleSpotlight = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--spot-x", `${((e.clientX - rect.left) / rect.width) * 100}%`);
+    el.style.setProperty("--spot-y", `${((e.clientY - rect.top) / rect.height) * 100}%`);
+  };
 
   return (
     <motion.div
@@ -41,16 +54,34 @@ export function MovieResultCard({
         <p className="text-center font-mono text-xs tracking-wide text-accent/80 mb-4">{rec.widened_notice}</p>
       )}
 
-      <div className="overflow-hidden border border-hairline bg-surface/60">
-        <div className="grid sm:grid-cols-[minmax(0,240px)_1fr]">
+      <div
+        ref={cardRef}
+        onMouseMove={handleSpotlight}
+        className="group relative overflow-hidden border border-hairline bg-surface/60 backdrop-blur-sm transition-[box-shadow,border-color] duration-500 hover:border-accent/40 hover:shadow-[0_0_60px_-15px_rgba(218,41,28,0.35)]"
+      >
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
+        <div
+          aria-hidden="true"
+          suppressHydrationWarning
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(218,41,28,0.08), transparent 70%)",
+          }}
+        />
+        <div className="grid sm:grid-cols-[minmax(0,190px)_1fr]">
           {/* poster */}
           <div
-            className="relative aspect-[2/3] sm:aspect-auto sm:h-full min-h-[220px] flex items-center justify-center overflow-hidden border-b sm:border-b-0 sm:border-r border-hairline"
+            className="relative aspect-[2/3] sm:aspect-auto sm:h-full min-h-[140px] flex items-center justify-center overflow-hidden border-b sm:border-b-0 sm:border-r border-hairline"
             style={{ background: movie.poster_url ? undefined : `linear-gradient(155deg, ${colorA}, ${colorB})` }}
           >
             {movie.poster_url ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={movie.poster_url} alt={movie.title} className="absolute inset-0 w-full h-full object-cover" />
+              <img
+                src={movie.poster_url}
+                alt={movie.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              />
             ) : (
               <>
                 <span className="font-display text-3xl text-white/40 select-none text-center px-4">
@@ -61,73 +92,65 @@ export function MovieResultCard({
                 </span>
               </>
             )}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent sm:hidden" />
           </div>
 
           {/* details */}
-          <div className="p-6 sm:p-8 space-y-5">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-accent mb-1.5">The movie tonight</p>
-              <h2 className="font-display font-medium text-4xl sm:text-5xl leading-none">{movie.title}</h2>
+          <div className="p-4 sm:p-5 space-y-2.5 min-w-0">
+            <h2 className="font-cinematic text-3xl sm:text-4xl leading-none">{movie.title}</h2>
+
+            <div className="flex flex-wrap items-center gap-1.5">
+              <Badge>{movie.year}</Badge>
+              {movie.genres.slice(0, 2).map((g) => (
+                <Badge key={g}>{g}</Badge>
+              ))}
+              <Badge>{LANGUAGE_NAMES[movie.language] || movie.language.toUpperCase()}</Badge>
+              <Badge>{formatRuntime(movie.runtime)}</Badge>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted">
-              <span>{movie.year}</span>
-              <span>·</span>
-              <span>{movie.genres.slice(0, 3).join(", ")}</span>
-              <span>·</span>
-              <span>{LANGUAGE_NAMES[movie.language] || movie.language.toUpperCase()}</span>
-              <span>·</span>
-              <span>{formatRuntime(movie.runtime)}</span>
+            <div className="flex items-center gap-3 border border-hairline bg-background/40 px-3 py-1.5">
+              <div className="flex items-baseline gap-1">
+                <span className="font-display font-bold text-xl text-accent-solid leading-none">
+                  <AnimatedNumber value={movie.rating} />
+                </span>
+                <span className="font-mono text-[10px] text-muted">/10</span>
+              </div>
+              <div className="h-5 w-px bg-hairline" />
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+                {movie.vote_count.toLocaleString()} votes
+              </p>
             </div>
 
-            <div className="flex items-center gap-2 border-y border-hairline py-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Rating</span>
-              <span className="font-display font-bold text-2xl text-accent-solid">
-                <AnimatedNumber value={movie.rating} />/10
-              </span>
-              <span className="font-mono text-[10px] text-muted">({movie.vote_count.toLocaleString()} votes)</span>
-            </div>
+            <p className="text-xs leading-snug text-foreground/80 line-clamp-2">{movie.overview}</p>
 
-            {movie.tagline && <p className="font-display text-foreground/70 text-base">&ldquo;{movie.tagline}&rdquo;</p>}
-            <p className="text-sm leading-relaxed text-foreground/80 line-clamp-4">{movie.overview}</p>
+            <p className="font-mono text-[10px] text-muted truncate">
+              <span className="text-foreground/60">Director:</span> {movie.director}
+            </p>
 
-            <div className="font-mono text-xs text-muted space-y-1">
-              <p><span className="text-foreground/60">Director</span> — {movie.director}</p>
-              {movie.cast.length > 0 && (
-                <p><span className="text-foreground/60">Cast</span> — {movie.cast.join(", ")}</p>
-              )}
-            </div>
-
-            <div className="border border-hairline p-4">
-              <p className="font-mono text-[11px] uppercase tracking-widest text-accent mb-1.5">Why this movie?</p>
-              <p className="text-sm text-foreground/80 leading-relaxed">{rec.explanation}</p>
+            <div className="border-l-2 border-accent bg-background/40 px-3 py-2">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-accent mb-0.5">Why this movie?</p>
+              <p className="text-xs text-foreground/80 leading-snug line-clamp-2">{rec.explanation}</p>
             </div>
 
             <StarRating key={movie.id} />
 
-            <div className="flex flex-wrap gap-3 pt-1 font-mono text-xs uppercase tracking-wide font-semibold">
-              <a
+            <div className="flex flex-wrap gap-2 pt-0.5">
+              <motion.a
                 href={movie.trailer_search_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-3 border border-hairline text-foreground/85 hover:border-accent hover:text-foreground transition-colors"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className={buttonClass("secondary", "sm")}
               >
-                ▶ Watch Trailer
-              </a>
-              <button
-                onClick={onFlipAgain}
-                disabled={flipDisabled}
-                className="px-5 py-3 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors disabled:opacity-40"
-              >
+                ▶ Trailer
+              </motion.a>
+              <Button onClick={onFlipAgain} disabled={flipDisabled} variant="primary" size="sm">
                 ↻ Flip Again
-              </button>
-              <button
-                onClick={onSurpriseMe}
-                disabled={flipDisabled}
-                className="px-5 py-3 border border-hairline text-foreground/85 hover:border-accent hover:text-foreground transition-colors disabled:opacity-40"
-              >
+              </Button>
+              <Button onClick={onSurpriseMe} disabled={flipDisabled} variant="secondary" size="sm">
                 ⚄ Surprise Me
-              </button>
+              </Button>
             </div>
           </div>
         </div>

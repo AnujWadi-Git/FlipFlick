@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Preferences } from "@/lib/types";
 import { GENRES, LANGUAGES } from "@/lib/constants";
 import { Pill } from "./Pill";
+import { Button } from "./Button";
 
 type StepKey = "language" | "genre";
 
@@ -70,7 +71,7 @@ export function PreferenceWizard({
   };
 
   return (
-    <div className="w-full max-w-2xl flex flex-col items-center gap-10">
+    <div className="w-full max-w-4xl flex flex-col items-center gap-6">
       {/* progress */}
       <div className="flex items-center gap-2 font-mono text-[10px] text-muted">
         <span>{String(stepIndex + 1).padStart(2, "0")}</span>
@@ -87,8 +88,15 @@ export function PreferenceWizard({
         <span>{String(STEPS.length).padStart(2, "0")}</span>
       </div>
 
-      <div className="w-full min-h-[220px] flex flex-col items-center">
-        <AnimatePresence mode="wait" custom={direction}>
+      <div className="relative w-full flex flex-col items-center rounded-3xl border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-8 sm:px-10 sm:py-10 overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+        <div
+          aria-hidden="true"
+          suppressHydrationWarning
+          className="pointer-events-none absolute left-1/2 top-0 -z-0 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.12] blur-[80px]"
+          style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
+        />
+        <AnimatePresence mode="popLayout" custom={direction}>
           <motion.div
             key={step.key}
             custom={direction}
@@ -96,57 +104,59 @@ export function PreferenceWizard({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: direction * -40 }}
             transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
-            className="w-full flex flex-col items-center gap-8"
+            className="w-full flex flex-col items-center gap-5"
           >
             <div className="text-center space-y-2">
-              <h2 className="font-display text-4xl sm:text-5xl">{step.question}</h2>
+              <h2 className="font-display text-3xl sm:text-4xl">{step.question}</h2>
               {step.subtitle && <p className="font-mono text-xs uppercase tracking-widest text-muted">{step.subtitle}</p>}
             </div>
 
-            <div className="flex flex-wrap justify-center gap-3 max-w-xl">
-              {step.key === "language" &&
-                LANGUAGES.map((l) => (
+            {step.key === "language" && (
+              <div className="flex flex-nowrap justify-center gap-1.5 sm:gap-2.5 w-full px-1">
+                {LANGUAGES.map((l) => (
                   <Pill
                     key={l}
                     label={l}
+                    compact
                     selected={!!touched.language && prefs.language === l}
                     onClick={() => selectSingle("language", l)}
                   />
                 ))}
+              </div>
+            )}
 
-              {step.key === "genre" &&
-                GENRES.map((g) => (
+            {step.key === "genre" && (
+              <div className="flex flex-wrap justify-center gap-3 max-w-xl">
+                {GENRES.map((g) => (
                   <Pill key={g} label={g} selected={prefs.genres.includes(g)} onClick={() => toggleGenre(g)} />
                 ))}
-            </div>
+              </div>
+            )}
 
-            <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
-              <button
-                onClick={back}
-                disabled={stepIndex === 0}
-                className="text-muted hover:text-foreground transition-colors disabled:opacity-0 disabled:pointer-events-none"
-              >
-                ← Back
-              </button>
+            {(stepIndex > 0 || step.multi || step.optional) && (
+              <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
+                {stepIndex > 0 && (
+                  <button onClick={back} className="text-muted hover:text-foreground transition-colors">
+                    ← Back
+                  </button>
+                )}
 
-              {step.multi && (
-                <button
-                  onClick={() => goTo(stepIndex + 1, 1)}
-                  className="px-8 py-3.5 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors"
-                >
-                  Continue
-                </button>
-              )}
+                {step.multi && (
+                  <Button onClick={() => goTo(stepIndex + 1, 1)} variant="primary" size="md">
+                    Continue
+                  </Button>
+                )}
 
-              {step.optional && (
-                <button
-                  onClick={() => goTo(stepIndex + 1, 1)}
-                  className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
-                >
-                  Skip
-                </button>
-              )}
-            </div>
+                {step.optional && (
+                  <button
+                    onClick={() => goTo(stepIndex + 1, 1)}
+                    className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
+                  >
+                    Skip
+                  </button>
+                )}
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

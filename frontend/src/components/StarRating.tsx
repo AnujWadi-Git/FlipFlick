@@ -23,8 +23,8 @@ export function StarRating() {
 
   if (submitted) {
     return (
-      <div className="border border-hairline p-4 text-center">
-        <p className="font-mono text-[11px] uppercase tracking-widest text-accent-solid">
+      <div className="border border-hairline px-3 py-2 text-center">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-accent-solid">
           Thanks for rating this pick
         </p>
       </div>
@@ -32,11 +32,9 @@ export function StarRating() {
   }
 
   return (
-    <div className="border border-hairline p-4">
-      <p className="font-mono text-[11px] uppercase tracking-widest text-accent mb-2 text-center">
-        How accurate was this pick?
-      </p>
-      <div className="flex items-center justify-center gap-1.5">
+    <div className="flex items-center justify-between gap-3 border border-hairline px-3 py-2">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-accent">How accurate?</p>
+      <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
@@ -45,7 +43,7 @@ export function StarRating() {
             onMouseEnter={() => setHovered(star)}
             onMouseLeave={() => setHovered(0)}
             onClick={() => handleClick(star)}
-            className={`text-2xl leading-none transition-colors disabled:opacity-50 ${
+            className={`text-lg leading-none transition-colors disabled:opacity-50 ${
               star <= (hovered || selected) ? "text-accent-solid" : "text-hairline"
             }`}
             aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}

@@ -1,6 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { buttonClass, pearlWrapClass } from "@/lib/buttonStyles";
 
 export function FlipButton({
   onClick,
@@ -13,20 +15,41 @@ export function FlipButton({
   spinning?: boolean;
   label?: string;
 }) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const x = useSpring(mx, { stiffness: 200, damping: 15, mass: 0.4 });
+  const y = useSpring(my, { stiffness: 200, damping: 15, mass: 0.4 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (disabled || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const relX = e.clientX - (rect.left + rect.width / 2);
+    const relY = e.clientY - (rect.top + rect.height / 2);
+    // Pull toward the cursor at ~18% strength — noticeable but not gimmicky.
+    mx.set(relX * 0.18);
+    my.set(relY * 0.18);
+  };
+
+  const handleMouseLeave = () => {
+    mx.set(0);
+    my.set(0);
+  };
+
   return (
     <motion.button
+      ref={ref}
       type="button"
       onClick={onClick}
       disabled={disabled}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x, y }}
       whileHover={!disabled ? { y: -2 } : undefined}
       whileTap={!disabled ? { scale: 0.97 } : undefined}
-      className={`relative w-full sm:w-auto px-14 py-5 font-mono text-lg sm:text-xl tracking-[0.15em] uppercase font-bold
-        border border-accent bg-accent text-white
-        transition-colors duration-200
-        hover:bg-accent-hover hover:border-accent-hover
-        disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-accent`}
+      className={buttonClass("primary", "lg", "w-full sm:w-auto")}
     >
-      {spinning ? "Flipping…" : label}
+      <span className={pearlWrapClass("lg")}>{spinning ? "Flipping…" : label}</span>
     </motion.button>
   );
 }

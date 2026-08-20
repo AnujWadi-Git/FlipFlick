@@ -218,7 +218,7 @@ async def create_session(prefs_in: PreferencesIn):
 async def flip_again(session_id: str, body: FlipIn):
     session = _sessions.get(session_id)
     if not session:
-        raise HTTPException(404, "Session not found — start a new flip.")
+        raise HTTPException(404, "Session not found. Start a new flip.")
 
     recommender: Recommender = _state["recommender"]
     prefs: Preferences = session["prefs"]
@@ -269,7 +269,7 @@ async def feedback(session_id: str, movie_id: str, body: FeedbackIn):
     """
     session = _sessions.get(session_id)
     if not session:
-        raise HTTPException(404, "Session not found — start a new flip.")
+        raise HTTPException(404, "Session not found. Start a new flip.")
 
     df: pd.DataFrame = _state["df"]
     match = df[df["movie_id"] == movie_id]

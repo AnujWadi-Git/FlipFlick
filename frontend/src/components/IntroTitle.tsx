@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getReviewStats } from "@/lib/api";
 import { ReviewStats } from "@/lib/types";
+import { Badge } from "./Badge";
 
 const TITLE = "FLIPFLICK";
 
@@ -24,12 +25,22 @@ export function IntroTitle() {
   }, []);
 
   return (
-    <div className="text-center space-y-5">
-      <p className="font-mono text-[10px] sm:text-xs tracking-[0.5em] text-accent/80 animate-flicker">
-        REEL 01 — TONIGHT&apos;S SCREENING
-      </p>
+    <div className="relative text-center space-y-3">
+      {/* soft red glow behind the title — a circle with a heavy blur, so it
+          fades to nothing well before its own box edge (a hard-edged or
+          under-blurred glow shape reads as a visible rectangle, which is
+          the thing to avoid here). */}
+      <motion.div
+        aria-hidden="true"
+        suppressHydrationWarning
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.35, 0.5, 0.4, 0.5] }}
+        transition={{ opacity: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
+        style={{ background: "radial-gradient(circle, rgba(218,41,28,0.5) 0%, transparent 65%)" }}
+      />
       <h1
-        className="font-display text-[13vw] sm:text-[5.5rem] leading-[0.9] flex justify-center flex-wrap"
+        className="font-cinematic text-[14vw] sm:text-[5.5rem] flex justify-center flex-wrap"
         style={{ perspective: 600 }}
       >
         {TITLE.split("").map((ch, i) => (
@@ -45,7 +56,7 @@ export function IntroTitle() {
           </motion.span>
         ))}
       </h1>
-      <div className="mx-auto h-px w-16 bg-hairline" />
+      <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-hairline to-transparent" />
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -55,15 +66,16 @@ export function IntroTitle() {
         You pick the vibe. We pick the movie.
       </motion.p>
       {stats && stats.count > 0 && (
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
-          className="font-mono text-[10px] sm:text-xs tracking-widest text-muted-soft uppercase"
         >
-          ★ {stats.average.toFixed(1)}/5 accuracy — Reviewed by {stats.count.toLocaleString()}{" "}
-          {stats.count === 1 ? "person" : "people"}
-        </motion.p>
+          <Badge tone="accent">
+            ★ {stats.average.toFixed(1)}/5 accuracy, reviewed by {stats.count.toLocaleString()}{" "}
+            {stats.count === 1 ? "person" : "people"}
+          </Badge>
+        </motion.div>
       )}
     </div>
   );
