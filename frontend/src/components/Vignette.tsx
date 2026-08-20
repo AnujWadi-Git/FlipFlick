@@ -5,6 +5,7 @@ export function Vignette() {
   return (
     <div
       aria-hidden="true"
+      suppressHydrationWarning
       className="fixed inset-0 z-[1] pointer-events-none"
       style={{
         background:

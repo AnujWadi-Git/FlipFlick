@@ -15,6 +15,7 @@ function FlipMark() {
         className="text-foreground"
         strokeWidth="3"
         strokeLinecap="round"
+        suppressHydrationWarning
       />
       <circle cx="27.3" cy="12" r="2" className="fill-foreground" />
       <path
@@ -23,6 +24,7 @@ function FlipMark() {
         className="text-accent-solid"
         strokeWidth="3"
         strokeLinecap="round"
+        suppressHydrationWarning
       />
       <circle cx="4.7" cy="20" r="2" className="fill-accent-solid" />
     </svg>

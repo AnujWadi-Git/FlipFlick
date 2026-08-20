@@ -88,12 +88,13 @@ export function PreferenceWizard({
         <span>{String(STEPS.length).padStart(2, "0")}</span>
       </div>
 
-      <div className="relative w-full flex flex-col items-center border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-10 sm:px-10 overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
+      <div className="relative w-full flex flex-col items-center rounded-3xl border border-hairline bg-surface/30 backdrop-blur-sm px-8 py-14 sm:px-14 sm:py-16 overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-[0.06]"
-          style={{ background: "radial-gradient(ellipse 60% 100% at 50% 0%, var(--accent), transparent)" }}
+          suppressHydrationWarning
+          className="pointer-events-none absolute left-1/2 top-0 -z-0 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.12] blur-[80px]"
+          style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
         />
         <AnimatePresence mode="popLayout" custom={direction}>
           <motion.div

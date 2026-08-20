@@ -62,6 +62,7 @@ export function MovieResultCard({
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
         <div
           aria-hidden="true"
+          suppressHydrationWarning
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
             background:
