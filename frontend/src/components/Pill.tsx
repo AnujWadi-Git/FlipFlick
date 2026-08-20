@@ -27,7 +27,7 @@ export function Pill({
         "focus-visible:ring-1 focus-visible:ring-accent",
         compact
           ? "px-2 py-1.5 text-[11px] sm:px-4 sm:py-2 sm:text-sm"
-          : "px-4 py-2 text-sm",
+          : "px-2.5 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm",
         selected
           ? "bg-accent border-accent text-white shadow-[0_4px_16px_-4px_rgba(218,41,28,0.6)]"
           : "bg-surface/40 border-hairline text-foreground/75 hover:border-accent/60 hover:text-foreground hover:bg-surface/70"

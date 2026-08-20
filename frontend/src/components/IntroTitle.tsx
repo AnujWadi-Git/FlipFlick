@@ -40,7 +40,7 @@ export function IntroTitle() {
         style={{ background: "radial-gradient(circle, rgba(218,41,28,0.5) 0%, transparent 65%)" }}
       />
       <h1
-        className="font-cinematic text-[14vw] sm:text-[5.5rem] flex justify-center flex-wrap"
+        className="font-cinematic text-[11vw] sm:text-[5.5rem] flex justify-center flex-wrap"
         style={{ perspective: 600 }}
       >
         {TITLE.split("").map((ch, i) => (
@@ -56,7 +56,7 @@ export function IntroTitle() {
           </motion.span>
         ))}
       </h1>
-      <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-hairline to-transparent" />
+      <div className="hidden sm:block mx-auto h-px w-16 bg-gradient-to-r from-transparent via-hairline to-transparent" />
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

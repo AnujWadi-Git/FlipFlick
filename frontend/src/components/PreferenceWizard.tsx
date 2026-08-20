@@ -71,7 +71,7 @@ export function PreferenceWizard({
   };
 
   return (
-    <div className="w-full max-w-4xl flex flex-col items-center gap-6">
+    <div className="w-full max-w-4xl flex flex-col items-center gap-3 sm:gap-6">
       {/* progress */}
       <div className="flex items-center gap-2 font-mono text-[10px] text-muted">
         <span>{String(stepIndex + 1).padStart(2, "0")}</span>
@@ -88,7 +88,7 @@ export function PreferenceWizard({
         <span>{String(STEPS.length).padStart(2, "0")}</span>
       </div>
 
-      <div className="relative w-full flex flex-col items-center rounded-3xl border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-8 sm:px-10 sm:py-10 overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
+      <div className="relative w-full flex flex-col items-center rounded-3xl border border-hairline bg-surface/30 backdrop-blur-sm px-4 py-5 sm:px-10 sm:py-10 overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
         <div
           aria-hidden="true"
@@ -104,10 +104,10 @@ export function PreferenceWizard({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: direction * -40 }}
             transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
-            className="w-full flex flex-col items-center gap-5"
+            className="w-full flex flex-col items-center gap-3 sm:gap-5"
           >
             <div className="text-center space-y-2">
-              <h2 className="font-display text-3xl sm:text-4xl">{step.question}</h2>
+              <h2 className="font-display text-2xl sm:text-4xl">{step.question}</h2>
               {step.subtitle && <p className="font-mono text-xs uppercase tracking-widest text-muted">{step.subtitle}</p>}
             </div>
 
@@ -126,7 +126,7 @@ export function PreferenceWizard({
             )}
 
             {step.key === "genre" && (
-              <div className="flex flex-wrap justify-center gap-3 max-w-xl">
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-3 max-w-xl">
                 {GENRES.map((g) => (
                   <Pill key={g} label={g} selected={prefs.genres.includes(g)} onClick={() => toggleGenre(g)} />
                 ))}

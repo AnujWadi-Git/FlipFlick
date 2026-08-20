@@ -72,7 +72,7 @@ export function MovieResultCard({
         <div className="grid sm:grid-cols-[minmax(0,190px)_1fr]">
           {/* poster */}
           <div
-            className="relative aspect-[2/3] sm:aspect-auto sm:h-full min-h-[140px] flex items-center justify-center overflow-hidden border-b sm:border-b-0 sm:border-r border-hairline"
+            className="relative h-28 sm:h-auto sm:aspect-auto sm:min-h-[140px] flex items-center justify-center overflow-hidden border-b sm:border-b-0 sm:border-r border-hairline"
             style={{ background: movie.poster_url ? undefined : `linear-gradient(155deg, ${colorA}, ${colorB})` }}
           >
             {movie.poster_url ? (

@@ -82,14 +82,14 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center gap-6 w-full"
+            className="flex flex-col items-center gap-3 sm:gap-6 w-full"
           >
             <IntroTitle />
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
-              className="text-center text-muted max-w-md text-sm sm:text-base"
+              className="hidden sm:block text-center text-muted max-w-md text-sm sm:text-base"
             >
               Stop scrolling. Flip for a movie. Tell us what you&apos;re feeling. We&apos;ll make the decision.
             </motion.p>
@@ -158,9 +158,11 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center w-full gap-3"
+            className="flex flex-col items-center w-full gap-2 sm:gap-3"
           >
-            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-accent">Not random. Just unpredictable.</p>
+            <p className="hidden sm:block font-mono text-[10px] tracking-[0.3em] uppercase text-accent">
+              Not random. Just unpredictable.
+            </p>
             <MovieResultCard rec={displayed} onFlipAgain={handleFlipAgain} onSurpriseMe={handleSurpriseMe} />
             <FlipHistory history={flip.history} activeId={displayed.movie.id} onSelect={setActiveRec} />
           </motion.div>
