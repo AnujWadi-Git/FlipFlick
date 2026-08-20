@@ -36,7 +36,7 @@ export function IntroTitle() {
         REEL 01 — TONIGHT&apos;S SCREENING
       </span>
       <h1
-        className="font-display text-[13vw] sm:text-[5.5rem] leading-[0.9] flex justify-center flex-wrap"
+        className="font-cinematic text-[16vw] sm:text-[6.5rem] flex justify-center flex-wrap"
         style={{ perspective: 600 }}
       >
         {TITLE.split("").map((ch, i) => (

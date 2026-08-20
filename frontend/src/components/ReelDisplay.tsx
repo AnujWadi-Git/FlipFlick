@@ -27,7 +27,7 @@ export function ReelDisplay({ title, blur, landed }: { title: string; blur: numb
           exit={{ y: -34, opacity: 0 }}
           transition={{ duration: 0.16, ease: "easeOut" }}
           style={{ filter: `blur(${blur}px)` }}
-          className={`absolute inset-0 flex items-center justify-center px-8 text-center font-display text-2xl sm:text-4xl truncate ${landed ? "animate-land text-accent-solid" : "text-foreground"}`}
+          className={`absolute inset-0 flex items-center justify-center px-8 text-center font-cinematic text-3xl sm:text-5xl truncate ${landed ? "animate-land text-accent-solid" : "text-foreground"}`}
         >
           {title || "—"}
         </motion.div>

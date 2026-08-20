@@ -82,6 +82,15 @@ body::before {
   color: var(--accent);
 }
 
+/* Cinematic streaming-service impact font — FLIPFLICK wordmark + movie
+   titles only. Bebas Neue is naturally tall/condensed, so it gets a touch
+   of positive tracking and a tighter line-height than .font-display. */
+.font-cinematic {
+  font-family: var(--font-cinematic), var(--font-sans), sans-serif;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
 ::selection {
   background: var(--accent);
   color: #ffffff;

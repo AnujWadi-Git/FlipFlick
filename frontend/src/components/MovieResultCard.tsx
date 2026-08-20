@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Recommendation } from "@/lib/types";
 import { AnimatedNumber } from "./AnimatedNumber";
@@ -30,6 +31,15 @@ export function MovieResultCard({
 }) {
   const { movie } = rec;
   const [colorA, colorB] = movie.poster_seed.split(",");
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleSpotlight = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--spot-x", `${((e.clientX - rect.left) / rect.width) * 100}%`);
+    el.style.setProperty("--spot-y", `${((e.clientY - rect.top) / rect.height) * 100}%`);
+  };
 
   return (
     <motion.div
@@ -42,8 +52,20 @@ export function MovieResultCard({
         <p className="text-center font-mono text-xs tracking-wide text-accent/80 mb-4">{rec.widened_notice}</p>
       )}
 
-      <div className="group relative overflow-hidden border border-hairline bg-surface/60 backdrop-blur-sm transition-[box-shadow,border-color] duration-500 hover:border-accent/40 hover:shadow-[0_0_60px_-15px_rgba(218,41,28,0.35)]">
+      <div
+        ref={cardRef}
+        onMouseMove={handleSpotlight}
+        className="group relative overflow-hidden border border-hairline bg-surface/60 backdrop-blur-sm transition-[box-shadow,border-color] duration-500 hover:border-accent/40 hover:shadow-[0_0_60px_-15px_rgba(218,41,28,0.35)]"
+      >
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(218,41,28,0.08), transparent 70%)",
+          }}
+        />
         <div className="grid sm:grid-cols-[minmax(0,240px)_1fr]">
           {/* poster */}
           <div
@@ -74,7 +96,7 @@ export function MovieResultCard({
           <div className="p-6 sm:p-8 space-y-5">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-accent mb-1.5">The movie tonight</p>
-              <h2 className="font-display font-medium text-4xl sm:text-5xl leading-none">{movie.title}</h2>
+              <h2 className="font-cinematic text-5xl sm:text-6xl">{movie.title}</h2>
             </div>
 
             <div className="flex flex-wrap items-center gap-1.5">
