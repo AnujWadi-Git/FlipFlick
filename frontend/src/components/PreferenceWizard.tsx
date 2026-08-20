@@ -87,7 +87,11 @@ export function PreferenceWizard({
         <span>{String(STEPS.length).padStart(2, "0")}</span>
       </div>
 
-      <div className="w-full min-h-[260px] flex flex-col items-center border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-10 sm:px-10">
+      <motion.div
+        layout
+        transition={{ layout: { duration: 0.32, ease: [0.2, 0.8, 0.2, 1] } }}
+        className="w-full flex flex-col items-center border border-hairline bg-surface/30 backdrop-blur-sm px-6 py-10 sm:px-10"
+      >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={step.key}
@@ -125,36 +129,36 @@ export function PreferenceWizard({
               </div>
             )}
 
-            <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
-              <button
-                onClick={back}
-                disabled={stepIndex === 0}
-                className="text-muted hover:text-foreground transition-colors disabled:opacity-0 disabled:pointer-events-none"
-              >
-                ← Back
-              </button>
+            {(stepIndex > 0 || step.multi || step.optional) && (
+              <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-wide">
+                {stepIndex > 0 && (
+                  <button onClick={back} className="text-muted hover:text-foreground transition-colors">
+                    ← Back
+                  </button>
+                )}
 
-              {step.multi && (
-                <button
-                  onClick={() => goTo(stepIndex + 1, 1)}
-                  className="px-8 py-3.5 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors"
-                >
-                  Continue
-                </button>
-              )}
+                {step.multi && (
+                  <button
+                    onClick={() => goTo(stepIndex + 1, 1)}
+                    className="px-8 py-3.5 border border-accent bg-accent text-white hover:bg-accent-hover hover:border-accent-hover transition-colors"
+                  >
+                    Continue
+                  </button>
+                )}
 
-              {step.optional && (
-                <button
-                  onClick={() => goTo(stepIndex + 1, 1)}
-                  className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
-                >
-                  Skip
-                </button>
-              )}
-            </div>
+                {step.optional && (
+                  <button
+                    onClick={() => goTo(stepIndex + 1, 1)}
+                    className="text-muted hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
+                  >
+                    Skip
+                  </button>
+                )}
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
-      </div>
+      </motion.div>
     </div>
   );
 }

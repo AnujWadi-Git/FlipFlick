@@ -16,7 +16,7 @@ function FlipMark() {
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <path d="M23 8.5 27.3 12l1.4-5.6-5.7 2.1Z" className="fill-foreground" />
+      <circle cx="27.3" cy="12" r="2" className="fill-foreground" />
       <path
         d="M16 28a12 12 0 0 1-11.3-8"
         stroke="currentColor"
@@ -24,7 +24,7 @@ function FlipMark() {
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <path d="M9 23.5 4.7 20l-1.4 5.6 5.7-2.1Z" className="fill-accent-solid" />
+      <circle cx="4.7" cy="20" r="2" className="fill-accent-solid" />
     </svg>
   );
 }
