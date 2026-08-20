@@ -57,7 +57,7 @@ export function ReelDisplay({ title, blur, landed }: { title: string; blur: numb
           className={`absolute inset-0 flex items-center justify-center px-8 text-center font-cinematic text-3xl sm:text-5xl truncate ${landed ? "animate-land text-accent-solid" : "text-foreground"}`}
         >
           <div ref={textRef} className="inline-block">
-            {title || "—"}
+            {title || "•"}
           </div>
         </motion.div>
       </AnimatePresence>

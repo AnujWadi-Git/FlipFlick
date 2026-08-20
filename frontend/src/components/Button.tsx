@@ -2,7 +2,7 @@
 
 import { forwardRef, type ReactNode } from "react";
 import { motion, type HTMLMotionProps } from "framer-motion";
-import { buttonClass, type ButtonVariant, type ButtonSize } from "@/lib/buttonStyles";
+import { buttonClass, pearlWrapClass, type ButtonVariant, type ButtonSize } from "@/lib/buttonStyles";
 
 type Props = {
   variant?: ButtonVariant;
@@ -23,7 +23,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       className={buttonClass(variant, size, className)}
       {...props}
     >
-      {children}
+      {variant === "primary" ? <span className={pearlWrapClass(size)}>{children}</span> : children}
     </motion.button>
   );
 });

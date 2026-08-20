@@ -34,7 +34,7 @@ export function FlipHistory({
                 : "border-hairline text-muted hover:text-foreground hover:border-accent"
             }`}
           >
-            {String(i + 1).padStart(2, "0")} — {rec.movie.title}
+            {String(i + 1).padStart(2, "0")}. {rec.movie.title}
           </motion.button>
         ))}
       </div>

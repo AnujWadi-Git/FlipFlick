@@ -72,7 +72,7 @@ export function IntroTitle() {
           transition={{ delay: 0.7, duration: 0.6 }}
         >
           <Badge tone="accent">
-            ★ {stats.average.toFixed(1)}/5 accuracy — Reviewed by {stats.count.toLocaleString()}{" "}
+            ★ {stats.average.toFixed(1)}/5 accuracy, reviewed by {stats.count.toLocaleString()}{" "}
             {stats.count === 1 ? "person" : "people"}
           </Badge>
         </motion.div>

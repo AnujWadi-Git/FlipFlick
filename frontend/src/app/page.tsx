@@ -91,13 +91,13 @@ export default function Home() {
               transition={{ delay: 1.2 }}
               className="text-center text-muted max-w-md text-sm sm:text-base"
             >
-              Stop scrolling. Flip for a movie. Tell us what you&apos;re feeling — we&apos;ll make the decision.
+              Stop scrolling. Flip for a movie. Tell us what you&apos;re feeling. We&apos;ll make the decision.
             </motion.p>
 
             <PreferenceWizard prefs={prefs} onChange={setPrefs} onComplete={() => setWizardDone(true)} />
 
             <button onClick={handleSurpriseMe} className={buttonClass("ghost")}>
-              Or skip the questions — Surprise Me
+              Or skip the questions: Surprise Me
             </button>
           </motion.div>
         )}

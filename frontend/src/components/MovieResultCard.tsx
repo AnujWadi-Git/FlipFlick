@@ -124,7 +124,7 @@ export function MovieResultCard({
             <p className="text-xs leading-snug text-foreground/80 line-clamp-2">{movie.overview}</p>
 
             <p className="font-mono text-[10px] text-muted truncate">
-              <span className="text-foreground/60">Director</span> — {movie.director}
+              <span className="text-foreground/60">Director:</span> {movie.director}
             </p>
 
             <div className="border-l-2 border-accent bg-background/40 px-3 py-2">

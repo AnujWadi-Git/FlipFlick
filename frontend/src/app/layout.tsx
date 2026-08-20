@@ -20,9 +20,9 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "FlipFlick — Stop scrolling. Flip for a movie.",
+  title: "FlipFlick: Stop scrolling. Flip for a movie.",
   description:
-    "Tell FlipFlick what you're feeling and it will flip a coin — an intelligent one — to decide exactly what you should watch tonight.",
+    "Tell FlipFlick what you're feeling and it will flip an intelligent coin to decide exactly what you should watch tonight.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

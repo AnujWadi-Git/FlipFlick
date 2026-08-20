@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { buttonClass } from "@/lib/buttonStyles";
+import { buttonClass, pearlWrapClass } from "@/lib/buttonStyles";
 
 export function FlipButton({
   onClick,
@@ -49,7 +49,7 @@ export function FlipButton({
       whileTap={!disabled ? { scale: 0.97 } : undefined}
       className={buttonClass("primary", "lg", "w-full sm:w-auto")}
     >
-      {spinning ? "Flipping…" : label}
+      <span className={pearlWrapClass("lg")}>{spinning ? "Flipping…" : label}</span>
     </motion.button>
   );
 }
